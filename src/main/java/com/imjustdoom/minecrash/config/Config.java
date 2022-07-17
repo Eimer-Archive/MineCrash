@@ -1,4 +1,4 @@
-package com.imjustdoom.crashdetector.config;
+package com.imjustdoom.minecrash.config;
 
 public class Config {
 
@@ -8,4 +8,6 @@ public class Config {
     public String password;
     public String port;
     public String database;
+
+    public String channelId;
 }

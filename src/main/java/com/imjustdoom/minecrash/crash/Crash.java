@@ -1,4 +1,4 @@
-package com.imjustdoom.crashdetector.crash;
+package com.imjustdoom.minecrash.crash;
 
 import java.util.HashMap;
 import java.util.List;

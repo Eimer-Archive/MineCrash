@@ -1,4 +1,4 @@
-package com.imjustdoom.crashdetector.command;
+package com.imjustdoom.minecrash.command;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;

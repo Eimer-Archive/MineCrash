@@ -1,4 +1,4 @@
-package com.imjustdoom.crashdetector.util;
+package com.imjustdoom.minecrash.util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 

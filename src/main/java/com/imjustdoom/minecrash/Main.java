@@ -1,9 +1,9 @@
-package com.imjustdoom.crashdetector;
+package com.imjustdoom.minecrash;
 
 import com.google.gson.Gson;
-import com.imjustdoom.crashdetector.command.CommandManager;
-import com.imjustdoom.crashdetector.config.Config;
-import com.imjustdoom.crashdetector.crash.Crash;
+import com.imjustdoom.minecrash.command.CommandManager;
+import com.imjustdoom.minecrash.config.Config;
+import com.imjustdoom.minecrash.crash.Crash;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;

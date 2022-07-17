@@ -1,9 +1,9 @@
-package com.imjustdoom.crashdetector.command.impl;
+package com.imjustdoom.minecrash.command.impl;
 
-import com.imjustdoom.crashdetector.Main;
-import com.imjustdoom.crashdetector.command.Command;
-import com.imjustdoom.crashdetector.crash.Crash;
-import com.imjustdoom.crashdetector.util.CrashUtil;
+import com.imjustdoom.minecrash.Main;
+import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.crash.Crash;
+import com.imjustdoom.minecrash.util.CrashUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
