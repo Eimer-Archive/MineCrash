@@ -39,10 +39,6 @@ public class Main {
             crashList.add(new Gson().fromJson(Files.readString(file.toPath()), Crash.class));
         }
 
-        for (Crash crash : crashList) {
-            System.out.println(crash.error);
-        }
-
         JDABuilder builder = JDABuilder.createDefault(config.token)
                 .addEventListeners(commandManager, new EventWaiter())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS);

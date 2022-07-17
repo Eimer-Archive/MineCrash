@@ -1,0 +1,8 @@
+{
+  "error": "Port is in use",
+  "matches": [
+    "java.net.BindException: Address already in use"
+  ],
+  "arguments": {},
+  "solution": "There is already something running on that port, try stopping whatever is running on this port. If you can't figure out what is running on that port, try restarting your computer or changing the port value in server.properties"
+}

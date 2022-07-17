@@ -1,8 +1,9 @@
 package com.imjustdoom.crashdetector.command;
 
 import com.imjustdoom.crashdetector.Main;
+import com.imjustdoom.crashdetector.command.impl.AboutCmd;
 import com.imjustdoom.crashdetector.command.impl.CrashCmd;
-import net.dv8tion.jda.api.EmbedBuilder;
+import com.imjustdoom.crashdetector.command.impl.HelpCmd;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -16,6 +17,8 @@ public class CommandManager extends ListenerAdapter {
 
     public CommandManager() {
         commands.add(new CrashCmd());
+        commands.add(new AboutCmd());
+        commands.add(new HelpCmd());
     }
 
     @Override
@@ -25,12 +28,7 @@ public class CommandManager extends ListenerAdapter {
         User user = event.getAuthor();
 
         if (event.getMessage().getContentRaw().contains("<@990855990897418270>")) {
-            event.getMessage().replyEmbeds(new EmbedBuilder()
-                    .setTitle("Crash Detector")
-                    .setDescription("""
-                            Hello, I am the crash detector bot.
-                            I can detect crashes in your code and send you a solution.
-                            Use `!help` to see all my commands (Soon).""").build()).queue();
+            new AboutCmd().execute(user, args, event.getMessage(), event.getTextChannel());
             return;
         }
 

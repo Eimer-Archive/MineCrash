@@ -1,5 +1,5 @@
 {
-  "error": "test",
+  "error": "Not enough ram",
   "matches": [
     "java.lang.OutOfMemoryError: GC overhead limit exceeded"
   ],

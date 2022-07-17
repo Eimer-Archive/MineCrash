@@ -1,5 +1,5 @@
 {
-  "error": "test",
+  "error": "Java version issue",
   "matches": [
     "Exception in thread \"main\" java.lang.IllegalAccessError",
     "cannot access class sun.security.util.ManifestEntryVerifier",

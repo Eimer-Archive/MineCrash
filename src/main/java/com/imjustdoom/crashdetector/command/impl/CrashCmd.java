@@ -3,6 +3,7 @@ package com.imjustdoom.crashdetector.command.impl;
 import com.imjustdoom.crashdetector.Main;
 import com.imjustdoom.crashdetector.command.Command;
 import com.imjustdoom.crashdetector.crash.Crash;
+import com.imjustdoom.crashdetector.util.CrashUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -80,7 +81,7 @@ public class CrashCmd implements Command {
             }
 
             // Send the crash solution
-            message.reply(solution).queue();
+            message.replyEmbeds(CrashUtil.getCrashEmbed(solution, crash.error).build()).queue();
         }
     }
 

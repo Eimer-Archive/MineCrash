@@ -1,5 +1,5 @@
 {
-  "error": "test",
+  "error": "Incorrect Java version",
   "matches": [
     "class file version",
     "class file versions up to"

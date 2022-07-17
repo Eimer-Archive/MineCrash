@@ -1,5 +1,5 @@
 {
-  "error": "test",
+  "error": "A mod is missing",
   "matches": [
     "net.minecraftforge.fml.common.MissingModsException"
   ],

@@ -1,0 +1,10 @@
+{
+  "error": "World session.lock error",
+  "matches": [
+    "Failed to start the minecraft server",
+    "session.lock: already locked",
+    "possibly by other Minecraft instance?"
+  ],
+  "arguments": {},
+  "solution": "An instance of the server may already be running, or the server may be stuck in a locked state. Try restarting the server, or if the problem persists, try restarting the computer."
+}

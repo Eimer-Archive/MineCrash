@@ -1,0 +1,11 @@
+{
+  "error": "Can't load the jar file",
+  "matches": [
+    "Could not load",
+    "Jar does not contain plugin.yml"
+  ],
+  "arguments": {
+    "0": "Could not load 'plugins\\/([^']+)"
+  },
+  "solution": "Could not load the plugin %0, it does not contain a plugin.yml file. Make sure this is a plugin and the plugin.yml file is in the correct location (If you are the plugin dev)."
+}
