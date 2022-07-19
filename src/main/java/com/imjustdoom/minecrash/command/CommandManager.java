@@ -29,7 +29,7 @@ public class CommandManager extends ListenerAdapter {
         String[] args = event.getMessage().getContentRaw().split(" ");
         User user = event.getAuthor();
 
-        if (event.getMessage().getContentRaw().contains("<@990855990897418270>")) {
+        if (event.getMessage().getContentRaw().contains("<@" + event.getJDA().getSelfUser().getIdLong() + ">")) {
             new AboutCmd().execute(user, args, event.getMessage(), event.getTextChannel());
             return;
         }

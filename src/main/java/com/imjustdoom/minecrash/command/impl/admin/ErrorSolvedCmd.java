@@ -2,6 +2,7 @@ package com.imjustdoom.minecrash.command.impl.admin;
 
 import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
@@ -12,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ErrorSolvedCmd implements Command {
+
+    public static Config config;
 
     @Override
     public String[] getName() {
@@ -30,7 +33,7 @@ public class ErrorSolvedCmd implements Command {
 
     @Override
     public String[] getUsers() {
-        return new String[]{"474482013886480385"};
+        return new String[]{config.owner};
     }
 
     @Override
@@ -68,7 +71,7 @@ public class ErrorSolvedCmd implements Command {
                                             .setDescription("The error has been solved!")
                                             .addField("ID", String.valueOf(id), false)
                                             .setColor(Color.GREEN)
-                                            .setFooter("Discord: discord.gg/wVCSqV7ptB")
+                                            .setFooter("Discord: " + config.server)
                                             .build())
                                     .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), "your-error.txt")
                                     .queue());
