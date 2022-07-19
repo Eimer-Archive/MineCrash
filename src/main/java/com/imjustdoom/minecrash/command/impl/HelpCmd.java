@@ -1,6 +1,7 @@
 package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,6 +31,8 @@ public class HelpCmd implements Command {
         return new String[]{};
     }
 
+    public static Config config;
+
     @Override
     public void execute(User user, String[] args, Message message, TextChannel channel) {
 
@@ -38,7 +41,7 @@ public class HelpCmd implements Command {
                 .setDescription("Command prefixes are ! or c!")
                 .addField("!error/!crash", "To get a crash/error solved by the bot run the command !error or " +
                         "!crash and either paste in the error or upload it in a txt file.", false)
-                .setFooter("Discord: https://discord.gg/k8RcgxpnBS")
+                .setFooter("Discord: " + config.server)
                 .setColor(0x00ff00)
                 .build()).queue();
     }

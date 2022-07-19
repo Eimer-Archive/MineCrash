@@ -1,5 +1,6 @@
 package com.imjustdoom.minecrash.util;
 
+import com.imjustdoom.minecrash.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ public class CrashUtil {
         embed.setTitle(crash);
         embed.addField("Solution", solution, false);
         embed.setColor(Color.GREEN);
-        embed.setFooter("Discord invite: https://discord.gg/k8RcgxpnBS");
+        embed.setFooter("Discord invite: " + Config.server);
         return embed;
     }
 }

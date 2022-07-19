@@ -1,6 +1,7 @@
 package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,6 +31,8 @@ public class AboutCmd implements Command {
         return new String[]{};
     }
 
+    public static Config config;
+
     @Override
     public void execute(User user, String[] args, Message message, TextChannel channel) {
 
@@ -41,7 +44,7 @@ public class AboutCmd implements Command {
                 .addField("How does it work?", "The bot works by checking for certain keywords and taking certain " +
                         "by using regex.", false)
                 .addField("Source", "This is also open source and can be found on GitHub [here](https://github.com/JustDoom/MineCrash)", false)
-                .setFooter("Discord: https://discord.gg/k8RcgxpnBS")
+                .setFooter("Discord: " + config.server)
                 .setColor(0x00ff00)
                 .build()).queue();
     }
