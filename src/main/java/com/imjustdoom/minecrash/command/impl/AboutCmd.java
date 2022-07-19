@@ -41,7 +41,7 @@ public class AboutCmd implements Command {
                 .addField("How does it work?", "The bot works by checking for certain keywords and taking certain " +
                         "by using regex.", false)
                 .addField("Source", "This is also open source and can be found on GitHub [here](https://github.com/JustDoom/MineCrash)", false)
-                .setFooter("Discord invite: https://discord.gg/k8RcgxpnBS")
+                .setFooter("Discord: https://discord.gg/k8RcgxpnBS")
                 .setColor(0x00ff00)
                 .build()).queue();
     }

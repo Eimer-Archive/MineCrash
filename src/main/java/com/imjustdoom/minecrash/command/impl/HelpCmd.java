@@ -38,7 +38,7 @@ public class HelpCmd implements Command {
                 .setDescription("Command prefixes are ! or c!")
                 .addField("!error/!crash", "To get a crash/error solved by the bot run the command !error or " +
                         "!crash and either paste in the error or upload it in a txt file.", false)
-                .setFooter("Discord invite: https://discord.gg/k8RcgxpnBS")
+                .setFooter("Discord: https://discord.gg/k8RcgxpnBS")
                 .setColor(0x00ff00)
                 .build()).queue();
     }

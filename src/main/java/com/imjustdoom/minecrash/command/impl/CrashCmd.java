@@ -4,13 +4,19 @@ import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
 import com.imjustdoom.minecrash.crash.Crash;
 import com.imjustdoom.minecrash.util.CrashUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
+import java.awt.*;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +46,7 @@ public class CrashCmd implements Command {
     @Override
     public void execute(User user, String[] args, Message message, TextChannel channel) {
 
-        String text = message.getContentRaw();
+        String text = message.getContentRaw().replace(args[0] + " ", "");
 
         if (message.getAttachments().size() > 0) {
             try {
@@ -55,7 +61,11 @@ public class CrashCmd implements Command {
 
                 text = stringBuilder.toString();
             } catch (Exception e) {
-                message.reply("Please attach a valid file.").queue();
+                message.replyEmbeds(new EmbedBuilder()
+                        .setTitle("Invalid File")
+                        .setDescription("Please attach a valid file.")
+                        .setColor(Color.RED)
+                        .build()).queue();
                 return;
             }
         }
@@ -82,7 +92,31 @@ public class CrashCmd implements Command {
 
             // Send the crash solution
             message.replyEmbeds(CrashUtil.getCrashEmbed(solution, crash.error).build()).queue();
+            return;
         }
+
+        // Add the error to the database if it's not in the database
+        String id = Main.db.addErrorForReview(user.getId(), text);
+
+        message.replyEmbeds(new EmbedBuilder()
+                .setTitle("This error has not been solved yet :(")
+                .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
+                        "If you have a solution please go (here) and submit an issue with this " + id + " in the title.")
+                .setColor(Color.RED)
+                .build())
+                .queue();
+
+        // Send the error to the log channel for the solution to be added
+        MessageChannel logChannel = Main.jda.getTextChannelById(Main.config.channelId);
+        logChannel.sendMessageEmbeds(
+                new EmbedBuilder()
+                        .setTitle("Unknown Error...")
+                        .setDescription("Error from " + user.getName() + "#" + user.getDiscriminator() + " (" + user.getId() + ")")
+                        .setFooter("Error ID: " + id)
+                        .setColor(Color.ORANGE)
+                        .build())
+                .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt")
+                .queue();
     }
 
     @Override

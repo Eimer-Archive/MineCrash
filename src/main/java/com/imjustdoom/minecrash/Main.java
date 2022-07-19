@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.imjustdoom.minecrash.command.CommandManager;
 import com.imjustdoom.minecrash.config.Config;
 import com.imjustdoom.minecrash.crash.Crash;
+import com.imjustdoom.minecrash.database.DatabaseConnection;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -21,10 +22,10 @@ import java.util.List;
 
 public class Main {
 
-
     public static final String[] prefix = new String[]{"!", "C!"};
 
     public static CommandManager commandManager = new CommandManager();
+    public static DatabaseConnection db;
     public static JDA jda;
     public static Config config;
 
@@ -34,6 +35,7 @@ public class Main {
 
         String data = Files.readString(Path.of("config.json"));
         config = new Gson().fromJson(data, Config.class);
+        db = new DatabaseConnection();
 
         for(File file : new File(Main.class.getResource("/crashes/").toURI()).listFiles()) {
             crashList.add(new Gson().fromJson(Files.readString(file.toPath()), Crash.class));
