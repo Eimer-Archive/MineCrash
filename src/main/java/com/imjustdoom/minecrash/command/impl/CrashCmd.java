@@ -110,7 +110,7 @@ public class CrashCmd implements Command {
         message.replyEmbeds(new EmbedBuilder()
                 .setTitle("This error has not been solved yet :(")
                 .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
-                        "If you have a solution please go (here) and submit an issue with this " + id + " in the title.")
+                        "If you have a solution please go [here](https://github.com/JustDoom/MineCrash/issues) and submit an issue with this " + id + " in the title.")
                 .setColor(Color.RED)
                 .build())
                 .queue();
