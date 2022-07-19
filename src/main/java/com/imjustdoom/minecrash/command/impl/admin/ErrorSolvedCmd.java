@@ -14,8 +14,6 @@ import java.util.List;
 
 public class ErrorSolvedCmd implements Command {
 
-    public static Config config;
-
     @Override
     public String[] getName() {
         return new String[]{"errorsolved", "solved", "solve", "errsolved"};
@@ -33,14 +31,14 @@ public class ErrorSolvedCmd implements Command {
 
     @Override
     public String[] getUsers() {
-        return new String[]{config.owner};
+        return new String[]{Main.getInstance().getConfig().getOwner()};
     }
 
     @Override
     public void execute(User user, String[] args, Message message, TextChannel channel) {
         int id = Integer.parseInt(args[1]);
 
-        if (!Main.db.containsErrorForReview(String.valueOf(id))) {
+        if (!Main.getInstance().getDb().containsErrorForReview(String.valueOf(id))) {
             message.replyEmbeds(new EmbedBuilder()
                     .setColor(Color.RED)
                     .setTitle("Error not found")
@@ -49,10 +47,10 @@ public class ErrorSolvedCmd implements Command {
             return;
         }
 
-        String text = Main.db.getErrorFromReview(id);
-        String userId = Main.db.getUserIdFromReview(id);
+        String text = Main.getInstance().getDb().getErrorFromReview(id);
+        String userId = Main.getInstance().getDb().getUserIdFromReview(id);
 
-        Main.db.removeErrorForReview(String.valueOf(id));
+        Main.getInstance().getDb().removeErrorForReview(String.valueOf(id));
 
         message.replyEmbeds(new EmbedBuilder()
                 .setTitle("Error has been solved!")
@@ -62,7 +60,7 @@ public class ErrorSolvedCmd implements Command {
                 .setFooter("Discord: discord.gg/wVCSqV7ptB")
                 .build()).queue();
 
-        Main.jda.retrieveUserById(userId)
+        Main.getInstance().getJda().retrieveUserById(userId)
                 .map(User::openPrivateChannel)
                 .queue(name -> {
                     name.queue((channel1) ->
@@ -71,7 +69,7 @@ public class ErrorSolvedCmd implements Command {
                                             .setDescription("The error has been solved!")
                                             .addField("ID", String.valueOf(id), false)
                                             .setColor(Color.GREEN)
-                                            .setFooter("Discord: " + config.server)
+                                            .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
                                             .build())
                                     .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), "your-error.txt")
                                     .queue());

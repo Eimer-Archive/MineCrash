@@ -6,6 +6,7 @@ import com.imjustdoom.minecrash.config.Config;
 import com.imjustdoom.minecrash.crash.Crash;
 import com.imjustdoom.minecrash.database.DatabaseConnection;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -22,29 +23,41 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Main {
 
-    public static final String[] prefix = new String[]{"!", "C!"};
+    private static Main INSTANCE;
 
-    public static CommandManager commandManager = new CommandManager();
-    public static DatabaseConnection db;
-    public static JDA jda;
-    public static Config config;
+    public static Main getInstance() {
+        return INSTANCE;
+    }
 
-    public static List<Crash> crashList = new ArrayList<>();
+    private final String[] prefix = new String[]{"!", "C!"};
 
-    public static void main(String[] args) throws LoginException, IOException, InterruptedException, URISyntaxException {
+    private final CommandManager commandManager = new CommandManager();
+    private final DatabaseConnection db;
+    private final JDA jda;
+    private Config config;
 
-        String data = Files.readString(Path.of("config.json"));
-        config = new Gson().fromJson(data, Config.class);
-        db = new DatabaseConnection();
+    private final List<Crash> crashList = new ArrayList<>();
 
-        //new File(Main.class.getResource("/crashes/").toURI())
-        for(File file : new File(String.valueOf(Path.of("crashes/"))).listFiles()) {
-            crashList.add(new Gson().fromJson(Files.readString(file.toPath()), Crash.class));
+    public Main() throws IOException, LoginException, InterruptedException {
+        INSTANCE = this;
+
+        try {
+            String data = Files.readString(Path.of("config.json"));
+            config = new Gson().fromJson(data, Config.class);
+        } catch (IOException e) {
+            System.out.println("Unable to load config. Shutting down.");
+            e.printStackTrace();
+            System.exit(0);
         }
 
-        JDABuilder builder = JDABuilder.createDefault(config.token)
+        db = new DatabaseConnection();
+
+        loadErrorFiles();
+
+        JDABuilder builder = JDABuilder.createDefault(config.getToken())
                 .addEventListeners(commandManager, new EventWaiter())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS);
 
@@ -52,6 +65,17 @@ public class Main {
 
         jda.awaitReady();
 
-        jda.getPresence().setActivity(Activity.playing("Solving crash reports"));
+        jda.getPresence().setActivity(Activity.playing("Solving crash reports!"));
+    }
+
+    public void loadErrorFiles() throws IOException {
+        //new File(Main.class.getResource("/crashes/").toURI())
+        for(File file : new File(String.valueOf(Path.of("crashes/"))).listFiles()) {
+            crashList.add(new Gson().fromJson(Files.readString(file.toPath()), Crash.class));
+        }
+    }
+
+    public static void main(String[] args) throws LoginException, IOException, InterruptedException {
+        new Main();
     }
 }

@@ -35,7 +35,7 @@ public class CommandManager extends ListenerAdapter {
         }
 
         String strCommand = "";
-        for (String prefix : Main.prefix) {
+        for (String prefix : Main.getInstance().getPrefix()) {
             if (!args[0].toLowerCase().startsWith(prefix.toLowerCase())) continue;
             strCommand = args[0].substring(prefix.length());
         }

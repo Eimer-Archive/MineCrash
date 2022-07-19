@@ -80,18 +80,18 @@ public class CrashCmd implements Command {
         }
 
         CRASH:
-        for (Crash crash : Main.crashList) {
+        for (Crash crash : Main.getInstance().getCrashList()) {
 
             // Check if there is a match in the crash list
-            for (String match : crash.matches) {
+            for (String match : crash.getMatches()) {
                 if (!text.contains(match)) {
                     continue CRASH;
                 }
             }
 
-            String solution = crash.solution;
-            for (String arg : crash.arguments.keySet()) {
-                Pattern pattern = Pattern.compile(crash.arguments.get(arg));
+            String solution = crash.getSolution();
+            for (String arg : crash.getArguments().keySet()) {
+                Pattern pattern = Pattern.compile(crash.getArguments().get(arg));
                 Matcher matcher = pattern.matcher(text);
 
                 if (matcher.find()) {
@@ -100,12 +100,12 @@ public class CrashCmd implements Command {
             }
 
             // Send the crash solution
-            message.replyEmbeds(CrashUtil.getCrashEmbed(solution, crash.error).build()).queue();
+            message.replyEmbeds(CrashUtil.getCrashEmbed(solution, crash.getError()).build()).queue();
             return;
         }
 
         // Add the error to the database if it's not in the database
-        String id = Main.db.addErrorForReview(user.getId(), text);
+        String id = Main.getInstance().getDb().addErrorForReview(user.getId(), text);
 
         message.replyEmbeds(new EmbedBuilder()
                 .setTitle("This error has not been solved yet :(")
@@ -116,7 +116,7 @@ public class CrashCmd implements Command {
                 .queue();
 
         // Send the error to the log channel for the solution to be added
-        MessageChannel logChannel = Main.jda.getTextChannelById(Main.config.channelId);
+        MessageChannel logChannel = Main.getInstance().getJda().getTextChannelById(Main.getInstance().getConfig().getChannelId());
         logChannel.sendMessageEmbeds(
                 new EmbedBuilder()
                         .setTitle("Unknown Error...")

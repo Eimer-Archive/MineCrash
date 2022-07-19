@@ -12,11 +12,11 @@ public class DatabaseConnection {
     public Connection conn;
 
     public DatabaseConnection() {
-        String user = Main.config.user;
-        String pass = Main.config.password;
-        String server = Main.config.host;
-        String port = Main.config.port;
-        String database = Main.config.database;
+        String user = Main.getInstance().getConfig().getUser();
+        String pass = Main.getInstance().getConfig().getPassword();
+        String server = Main.getInstance().getConfig().getHost();
+        String port = Main.getInstance().getConfig().getPort();
+        String database = Main.getInstance().getConfig().getDatabase();
 
         //Connect and setup database
         try {
