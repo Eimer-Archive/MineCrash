@@ -12,8 +12,10 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +39,8 @@ public class Main {
         config = new Gson().fromJson(data, Config.class);
         db = new DatabaseConnection();
 
-        for(File file : new File(Main.class.getResource("/crashes/").toURI()).listFiles()) {
+        //new File(Main.class.getResource("/crashes/").toURI())
+        for(File file : new File(String.valueOf(Path.of("crashes/"))).listFiles()) {
             crashList.add(new Gson().fromJson(Files.readString(file.toPath()), Crash.class));
         }
 
