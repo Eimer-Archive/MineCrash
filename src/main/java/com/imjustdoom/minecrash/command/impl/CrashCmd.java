@@ -46,6 +46,15 @@ public class CrashCmd implements Command {
     @Override
     public void execute(User user, String[] args, Message message, TextChannel channel) {
 
+        if (args.length == 1) {
+            message.replyEmbeds(new EmbedBuilder()
+                    .setColor(Color.RED)
+                    .setTitle("Missing error")
+                    .setDescription("Please specify an error to check.")
+                    .build()).queue();
+            return;
+        }
+
         String text = message.getContentRaw().replace(args[0] + " ", "");
 
         if (message.getAttachments().size() > 0) {

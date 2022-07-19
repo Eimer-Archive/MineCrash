@@ -10,7 +10,7 @@ public class CrashUtil {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle(crash);
         embed.addField("Solution", solution, false);
-        embed.setColor(Color.RED);
+        embed.setColor(Color.GREEN);
         embed.setFooter("Discord invite: https://discord.gg/k8RcgxpnBS");
         return embed;
     }
