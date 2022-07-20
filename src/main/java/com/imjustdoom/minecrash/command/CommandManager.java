@@ -5,6 +5,7 @@ import com.imjustdoom.minecrash.command.impl.AboutCmd;
 import com.imjustdoom.minecrash.command.impl.CrashCmd;
 import com.imjustdoom.minecrash.command.impl.HelpCmd;
 import com.imjustdoom.minecrash.command.impl.admin.ErrorSolvedCmd;
+import com.imjustdoom.minecrash.command.impl.admin.ReloadCrashFilesCmd;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -21,6 +22,7 @@ public class CommandManager extends ListenerAdapter {
         commands.add(new AboutCmd());
         commands.add(new HelpCmd());
         commands.add(new ErrorSolvedCmd());
+        commands.add(new ReloadCrashFilesCmd());
     }
 
     @Override
