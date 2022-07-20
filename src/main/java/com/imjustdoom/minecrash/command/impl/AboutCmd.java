@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
+import java.awt.*;
 import java.util.List;
 
 public class AboutCmd implements Command {
@@ -41,10 +42,10 @@ public class AboutCmd implements Command {
                 .addField("About", "This bot aims to take in errors/crash reports and respond with a solution. " +
                         "It will improve overtime and get solutions for more crashes/errors.", false)
                 .addField("How does it work?", "The bot works by checking for certain keywords and taking certain " +
-                        "by using regex.", false)
+                        "information from the error by using regex.", false)
                 .addField("Source", "This is also open source and can be found on GitHub [here](https://github.com/JustDoom/MineCrash)", false)
                 .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
-                .setColor(0x00ff00)
+                .setColor(Color.CYAN)
                 .build()).queue();
     }
 

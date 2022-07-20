@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
+import java.awt.*;
 import java.util.List;
 
 public class HelpCmd implements Command {
@@ -41,7 +42,7 @@ public class HelpCmd implements Command {
                 .addField("!error/!crash", "To get a crash/error solved by the bot run the command !error or " +
                         "!crash and either paste in the error or upload it in a txt file.", false)
                 .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
-                .setColor(0x00ff00)
+                .setColor(Color.CYAN)
                 .build()).queue();
     }
 
