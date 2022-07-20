@@ -58,6 +58,14 @@ public class DatabaseConnection {
                 ") ENGINE=InnoDB;";
 
         stmt.executeUpdate(sql);
+
+        sql = "CREATE TABLE IF NOT EXISTS blocked_users (" +
+                "`userId` VARCHAR(20) NOT NULL, " +
+                "`error` VARCHAR(3600) NOT NULL, " +
+                "reason KEY (`userId`) " +
+                ") ENGINE=InnoDB;";
+
+        stmt.executeUpdate(sql);
     }
 
     public String addErrorForReview(String userId, String error) {
@@ -133,5 +141,49 @@ public class DatabaseConnection {
         }
 
         return null;
+    }
+
+    public boolean addUserToBlockedUsers(String userId, String reason) {
+        String sql = "INSERT INTO blocked_users (userId, reason) VALUES (?, ?)";
+        try {
+            PreparedStatement preparedStatement = prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, userId);
+            preparedStatement.setString(2, reason);
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean removeUserFromBlockedUsers(String userId) {
+        String sql = "DELETE FROM blocked_users WHERE userId = ?";
+        try {
+            PreparedStatement preparedStatement = prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, userId);
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isUserBlocked(String userId) {
+        String sql = "SELECT userId FROM blocked_users WHERE userId = ?";
+        try {
+            PreparedStatement preparedStatement = prepareStatement(sql);
+            preparedStatement.setString(1, userId);
+            ResultSet rs = preparedStatement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

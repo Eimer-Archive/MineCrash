@@ -38,3 +38,4 @@ build/
 config.json
 dependency-reduced-pom.xml
 stats.json
+crashes
