@@ -37,3 +37,4 @@ build/
 ### Custom ###
 config.json
 dependency-reduced-pom.xml
+stats.json

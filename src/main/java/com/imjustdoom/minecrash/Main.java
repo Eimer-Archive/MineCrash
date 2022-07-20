@@ -2,6 +2,7 @@ package com.imjustdoom.minecrash;
 
 import com.google.gson.Gson;
 import com.imjustdoom.minecrash.command.CommandManager;
+import com.imjustdoom.minecrash.config.BotStats;
 import com.imjustdoom.minecrash.config.Config;
 import com.imjustdoom.minecrash.crash.Crash;
 import com.imjustdoom.minecrash.database.DatabaseConnection;
@@ -32,12 +33,13 @@ public class Main {
         return INSTANCE;
     }
 
-    private final String[] prefix = new String[]{"!", "C!"};
+    private final String[] prefix = new String[]{"!", "D!"};
 
     private final CommandManager commandManager = new CommandManager();
     private final DatabaseConnection db;
     private final JDA jda;
     private Config config;
+    private BotStats botStats;
 
     private final List<Crash> crashList = new ArrayList<>();
 
@@ -49,6 +51,15 @@ public class Main {
             config = new Gson().fromJson(data, Config.class);
         } catch (IOException e) {
             System.out.println("Unable to load config. Shutting down.");
+            e.printStackTrace();
+            System.exit(0);
+        }
+
+        try {
+            String data = Files.readString(Path.of("stats.json"));
+            botStats = new Gson().fromJson(data, BotStats.class);
+        } catch (IOException e) {
+            System.out.println("Unable to load stats. Shutting down.");
             e.printStackTrace();
             System.exit(0);
         }

@@ -2,6 +2,7 @@ package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.config.BotStats;
 import com.imjustdoom.minecrash.crash.Crash;
 import com.imjustdoom.minecrash.util.CrashUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -101,6 +102,10 @@ public class CrashCmd implements Command {
 
             // Send the crash solution
             message.replyEmbeds(CrashUtil.getCrashEmbed(solution, crash.getError()).build()).queue();
+
+            BotStats botStats = Main.getInstance().getBotStats();
+            botStats.setSolvedErrors(botStats.getSolvedErrors() + 1);
+            botStats.save();
             return;
         }
 
