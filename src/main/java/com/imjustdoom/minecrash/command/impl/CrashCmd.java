@@ -112,7 +112,7 @@ public class CrashCmd implements Command {
         // Add the error to the database if it's not in the database
         String id = "-1";
         if(!Main.getInstance().getDb().isUserBlocked(user.getId())) {
-            Main.getInstance().getDb().addErrorForReview(user.getId(), text);
+            id =  Main.getInstance().getDb().addErrorForReview(user.getId(), text);
 
             // Send the error to the log channel for the solution to be added
             MessageChannel logChannel = Main.getInstance().getJda().getTextChannelById(Main.getInstance().getConfig().getChannelId());
@@ -125,12 +125,20 @@ public class CrashCmd implements Command {
                                     .build())
                     .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt")
                     .queue();
+
+            message.replyEmbeds(new EmbedBuilder()
+                            .setTitle("This error has not been solved yet :(")
+                            .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
+                                    "If you have a solution please go [here](https://github.com/JustDoom/MineCrash/issues) and submit an issue with this " + id + " in the title.")
+                            .setColor(Color.RED)
+                            .build())
+                    .queue();
+            return;
         }
 
         message.replyEmbeds(new EmbedBuilder()
                         .setTitle("This error has not been solved yet :(")
-                        .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
-                                "If you have a solution please go [here](https://github.com/JustDoom/MineCrash/issues) and submit an issue with this " + id + " in the title.")
+                        .setDescription("This crash is not in the database sadly :(")
                         .setColor(Color.RED)
                         .build())
                 .queue();
