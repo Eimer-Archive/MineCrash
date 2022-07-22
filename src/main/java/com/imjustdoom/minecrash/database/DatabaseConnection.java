@@ -53,7 +53,7 @@ public class DatabaseConnection {
         String sql = "CREATE TABLE IF NOT EXISTS review (" +
                 "`id` INT NOT NULL AUTO_INCREMENT, " +
                 "`userId` VARCHAR(20) NOT NULL, " +
-                "`error` VARCHAR(3600) NOT NULL, " +
+                "`error` TEXT(25600) NOT NULL, " +
                 "PRIMARY KEY (`id`) " +
                 ") ENGINE=InnoDB;";
 
@@ -61,7 +61,7 @@ public class DatabaseConnection {
 
         sql = "CREATE TABLE IF NOT EXISTS blocked_users (" +
                 "`userId` VARCHAR(20) NOT NULL, " +
-                "`reason` VARCHAR(3600) NOT NULL, " +
+                "`reason` VARCHAR(1024) NOT NULL, " +
                 "PRIMARY KEY (`userId`) " +
                 ") ENGINE=InnoDB;";
 
