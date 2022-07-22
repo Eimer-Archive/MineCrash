@@ -38,7 +38,7 @@ public class ErrorSolvedCmd implements Command {
     public void execute(User user, String[] args, Message message, TextChannel channel) {
         int id = Integer.parseInt(args[1]);
 
-        if (!Main.getInstance().getDb().containsErrorForReview(String.valueOf(id))) {
+        if (!Main.getInstance().getDb().containsErrorForReview(String.valueOf(id)) || Main.getInstance().getDb().errorForReview(String.valueOf(id))) {
             message.replyEmbeds(new EmbedBuilder()
                     .setColor(Color.RED)
                     .setTitle("Error not found")
@@ -50,7 +50,7 @@ public class ErrorSolvedCmd implements Command {
         String text = Main.getInstance().getDb().getErrorFromReview(id);
         String userId = Main.getInstance().getDb().getUserIdFromReview(id);
 
-        Main.getInstance().getDb().removeErrorForReview(String.valueOf(id));
+        Main.getInstance().getDb().solveErrorForReview(String.valueOf(id));
 
         message.replyEmbeds(new EmbedBuilder()
                 .setTitle("Error has been solved!")

@@ -53,7 +53,8 @@ public class DatabaseConnection {
         String sql = "CREATE TABLE IF NOT EXISTS review (" +
                 "`id` INT NOT NULL AUTO_INCREMENT, " +
                 "`userId` VARCHAR(20) NOT NULL, " +
-                "`error` TEXT(25600) NOT NULL, " +
+                "`error` TEXT(65560) NOT NULL, " +
+                "`solved` BOOLEAN NOT NULL," +
                 "PRIMARY KEY (`id`) " +
                 ") ENGINE=InnoDB;";
 
@@ -69,11 +70,12 @@ public class DatabaseConnection {
     }
 
     public String addErrorForReview(String userId, String error) {
-        String sql = "INSERT INTO review (userId, error) VALUES (?, ?)";
+        String sql = "INSERT INTO review (userId, error, solved) VALUES (?, ?, ?)";
         try {
             PreparedStatement preparedStatement = prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, userId);
             preparedStatement.setString(2, error);
+            preparedStatement.setBoolean(3, false);
             preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -98,6 +100,18 @@ public class DatabaseConnection {
         }
     }
 
+    public void solveErrorForReview(String id) {
+        String sql = "UPDATE review SET solved = ? WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = prepareStatement(sql);
+            preparedStatement.setBoolean(1, true);
+            preparedStatement.setString(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean containsErrorForReview(String id) {
         String sql = "SELECT id FROM review WHERE id = ?";
         try {
@@ -105,6 +119,21 @@ public class DatabaseConnection {
             preparedStatement.setString(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean errorForReview(String id) {
+        String sql = "SELECT solved FROM review WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = prepareStatement(sql);
+            preparedStatement.setString(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

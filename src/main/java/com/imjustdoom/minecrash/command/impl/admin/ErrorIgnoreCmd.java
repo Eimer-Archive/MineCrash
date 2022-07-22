@@ -47,7 +47,16 @@ public class ErrorIgnoreCmd implements Command {
             return;
         }
 
-        Main.getInstance().getDb().removeErrorForReview(String.valueOf(id));
+        if (Main.getInstance().getDb().errorForReview(String.valueOf(id))) {
+            message.replyEmbeds(new EmbedBuilder()
+                    .setColor(Color.CYAN)
+                    .setTitle("Error already solved")
+                    .setDescription("The error has already been solved")
+                    .build()).queue();
+            return;
+        }
+
+        Main.getInstance().getDb().solveErrorForReview(String.valueOf(id));
 
         message.replyEmbeds(new EmbedBuilder()
                 .setTitle("Error has been removed")
