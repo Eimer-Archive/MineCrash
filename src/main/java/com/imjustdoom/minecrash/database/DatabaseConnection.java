@@ -61,8 +61,8 @@ public class DatabaseConnection {
 
         sql = "CREATE TABLE IF NOT EXISTS blocked_users (" +
                 "`userId` VARCHAR(20) NOT NULL, " +
-                "`error` VARCHAR(3600) NOT NULL, " +
-                "reason KEY (`userId`) " +
+                "`reason` VARCHAR(3600) NOT NULL, " +
+                "PRIMARY KEY (`userId`) " +
                 ") ENGINE=InnoDB;";
 
         stmt.executeUpdate(sql);
@@ -185,5 +185,20 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public String getBlockedUserReason(String userId) {
+        String sql = "SELECT reason FROM blocked_users WHERE userId = ?";
+        try {
+            PreparedStatement preparedStatement = prepareStatement(sql);
+            preparedStatement.setString(1, userId);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

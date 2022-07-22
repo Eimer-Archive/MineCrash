@@ -5,6 +5,7 @@ import com.imjustdoom.minecrash.command.impl.AboutCmd;
 import com.imjustdoom.minecrash.command.impl.CrashCmd;
 import com.imjustdoom.minecrash.command.impl.HelpCmd;
 import com.imjustdoom.minecrash.command.impl.InfoCmd;
+import com.imjustdoom.minecrash.command.impl.admin.BlockUserCmd;
 import com.imjustdoom.minecrash.command.impl.admin.ErrorIgnoreCmd;
 import com.imjustdoom.minecrash.command.impl.admin.ErrorSolvedCmd;
 import com.imjustdoom.minecrash.command.impl.admin.ReloadCrashFilesCmd;
@@ -27,6 +28,7 @@ public class CommandManager extends ListenerAdapter {
         commands.add(new ReloadCrashFilesCmd());
         commands.add(new InfoCmd());
         commands.add(new ErrorIgnoreCmd());
+        commands.add(new BlockUserCmd());
     }
 
     @Override

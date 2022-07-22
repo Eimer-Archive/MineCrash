@@ -110,26 +110,29 @@ public class CrashCmd implements Command {
         }
 
         // Add the error to the database if it's not in the database
-        String id = Main.getInstance().getDb().addErrorForReview(user.getId(), text);
+        String id = "-1";
+        if(!Main.getInstance().getDb().isUserBlocked(user.getId())) {
+            Main.getInstance().getDb().addErrorForReview(user.getId(), text);
+
+            // Send the error to the log channel for the solution to be added
+            MessageChannel logChannel = Main.getInstance().getJda().getTextChannelById(Main.getInstance().getConfig().getChannelId());
+            logChannel.sendMessageEmbeds(
+                            new EmbedBuilder()
+                                    .setTitle("Unknown Error...")
+                                    .setDescription("Error from " + user.getName() + "#" + user.getDiscriminator() + " (" + user.getId() + ")")
+                                    .setFooter("Error ID: " + id)
+                                    .setColor(Color.ORANGE)
+                                    .build())
+                    .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt")
+                    .queue();
+        }
 
         message.replyEmbeds(new EmbedBuilder()
-                .setTitle("This error has not been solved yet :(")
-                .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
-                        "If you have a solution please go [here](https://github.com/JustDoom/MineCrash/issues) and submit an issue with this " + id + " in the title.")
-                .setColor(Color.RED)
-                .build())
-                .queue();
-
-        // Send the error to the log channel for the solution to be added
-        MessageChannel logChannel = Main.getInstance().getJda().getTextChannelById(Main.getInstance().getConfig().getChannelId());
-        logChannel.sendMessageEmbeds(
-                new EmbedBuilder()
-                        .setTitle("Unknown Error...")
-                        .setDescription("Error from " + user.getName() + "#" + user.getDiscriminator() + " (" + user.getId() + ")")
-                        .setFooter("Error ID: " + id)
-                        .setColor(Color.ORANGE)
+                        .setTitle("This error has not been solved yet :(")
+                        .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
+                                "If you have a solution please go [here](https://github.com/JustDoom/MineCrash/issues) and submit an issue with this " + id + " in the title.")
+                        .setColor(Color.RED)
                         .build())
-                .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt")
                 .queue();
     }
 
