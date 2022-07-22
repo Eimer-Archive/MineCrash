@@ -1,0 +1,10 @@
+{
+  "error": "ServerHangWatchdog detected a single server tick took too long",
+  "matches": [
+    "ServerHangWatchdog detected that a single server tick took"
+  ],
+  "arguments": {
+    "0": "ServerHangWatchdog detected that a single server tick took ([0-9]?[0-9]\\.?[0-9]?[0-9]) seconds"
+  },
+  "solution": "A plugin/mod may be causing the server to hang. Try disabling the plugin/mod, if you don't know which one is causing the problem, try disabling all plugins/mods and then re-enabling them one by one or in groups until you find it. Another solution is disabling this feature, you can go into the `server.properties` and find `max-tick-time` and set it to `-1`."
+}
