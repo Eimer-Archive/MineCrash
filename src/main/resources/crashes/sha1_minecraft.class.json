@@ -1,0 +1,9 @@
+{
+  "error": "Corrupted minecraft.jar",
+  "matches": [
+    "java.lang.SecurityException: SHA1 digest error",
+    "Minecraft.class"
+  ],
+  "arguments": {},
+  "solution": "It seems your minecraft.jar file may be corrupted. Try redownloading your instance. If this doesn't work try google."
+}
