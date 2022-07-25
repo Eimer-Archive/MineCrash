@@ -22,7 +22,7 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://" + server + ":" + port + "/" + database, user, pass);
+                    "jdbc:mysql://" + server + ":" + port + "/" + database + "?autoConnect=true", user, pass);
             stmt = conn.createStatement();
 
             createSQLTables();
