@@ -40,7 +40,8 @@ public class HelpCmd implements Command {
                 .setTitle("Help")
                 .setDescription("Command prefixes are ! or c!")
                 .addField("!error/!crash", "To get a crash/error solved by the bot run the command !error or " +
-                        "!crash and either paste in the error or upload it in a txt file.", false)
+                        "!crash and either paste in the error or upload it in a txt file. If you upload a file add \"file\" after !error/!crash.", false)
+                .addField("!about/!stats", "Get some stats about the discord bot!", false)
                 .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
                 .setColor(Color.CYAN)
                 .build()).queue();
