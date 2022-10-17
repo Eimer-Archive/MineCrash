@@ -69,8 +69,8 @@ public class Main {
         loadErrorFiles();
 
         JDABuilder builder = JDABuilder.createDefault(config.getToken())
-                .addEventListeners(commandManager, new EventWaiter())
-                .enableIntents(GatewayIntent.GUILD_MEMBERS);
+                .addEventListeners(commandManager, new EventWaiter());
+                //.enableIntents(GatewayIntent.GUILD_MEMBERS);
 
         jda = builder.build();
 
