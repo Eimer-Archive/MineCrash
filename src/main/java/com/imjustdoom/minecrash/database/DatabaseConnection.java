@@ -1,6 +1,7 @@
 package com.imjustdoom.minecrash.database;
 
 import com.imjustdoom.minecrash.Main;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 
 import java.sql.*;

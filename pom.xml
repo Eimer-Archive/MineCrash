@@ -20,9 +20,9 @@
             <version>4.0.2-REL</version>
         </dependency>
         <dependency>
-            <groupId>com.github.DV8FromTheWorld</groupId>
+            <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>v5.0.0-alpha.13</version>
+            <version>5.0.0-beta.6</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
             <artifactId>prettytime</artifactId>
-            <version>5.0.5.Final</version>
+            <version>5.0.6.Final</version>
         </dependency>
     </dependencies>
 
