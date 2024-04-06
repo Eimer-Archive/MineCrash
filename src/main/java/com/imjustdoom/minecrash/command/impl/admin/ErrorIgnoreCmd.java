@@ -4,12 +4,10 @@ import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ErrorIgnoreCmd implements Command {

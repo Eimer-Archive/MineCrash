@@ -2,10 +2,11 @@ package com.imjustdoom.minecrash.command.impl.admin;
 
 import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
-import com.imjustdoom.minecrash.config.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.awt.*;
 import java.io.ByteArrayInputStream;
@@ -71,7 +72,7 @@ public class ErrorSolvedCmd implements Command {
                                             .setColor(Color.GREEN)
                                             .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
                                             .build())
-                                    .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), "your-error.txt")
+                                    .addFiles(FileUpload.fromData(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), "your-error.txt"))
                                     .queue());
                 });
     }

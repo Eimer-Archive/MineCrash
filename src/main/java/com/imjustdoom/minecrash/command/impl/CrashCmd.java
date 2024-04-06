@@ -7,14 +7,14 @@ import com.imjustdoom.minecrash.crash.Crash;
 import com.imjustdoom.minecrash.util.CrashUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -123,7 +123,7 @@ public class CrashCmd implements Command {
                                     .setFooter("Error ID: " + id)
                                     .setColor(Color.ORANGE)
                                     .build())
-                    .addFile(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt")
+                    .addFiles(FileUpload.fromData(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt"))
                     .queue();
 
             message.replyEmbeds(new EmbedBuilder()
