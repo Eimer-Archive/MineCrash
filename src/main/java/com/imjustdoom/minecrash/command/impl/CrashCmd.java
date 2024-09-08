@@ -79,6 +79,7 @@ public class CrashCmd implements Command {
 
             try {
                 String[] response = NetworkUtil.sendErrorForCheck(text);
+                System.out.println("yup " + response.length);
 
                 if (response.length == 1) {
                     event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
@@ -95,7 +96,7 @@ public class CrashCmd implements Command {
                 }
             } catch (IOException ex) {
                 event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         });
 

@@ -36,9 +36,10 @@ public class NetworkUtil {
     public static String[] sendErrorForCheck(String error) throws IOException {
         try {
             JsonObject object = sendPost(CHECK, error);
+            System.out.println(object.toString());
 
-            if (object.has("solution")) {
-                return new String[]{object.get("error").getAsString(), object.get("solution").getAsString()};
+            if (object.has("solution") && object.has("title")) {
+                return new String[]{object.get("title").getAsString(), object.get("solution").getAsString()};
             } else if (object.has("response")) {
                 return new String[]{object.get("response").getAsString()};
             }
