@@ -84,7 +84,7 @@ public class CrashCmd implements Command {
                                 .setColor(Color.GREEN)
                         .build()).queue();
             } catch (IOException ex) {
-                event.getHook().sendMessage("Error").queue();
+                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
                 throw new RuntimeException(ex);
             }
         });
