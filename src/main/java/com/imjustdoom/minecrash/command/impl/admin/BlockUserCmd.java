@@ -1,6 +1,7 @@
+/*
 package com.imjustdoom.minecrash.command.impl.admin;
 
-import com.imjustdoom.minecrash.Main;
+import com.imjustdoom.minecrash.MineCrash;
 import com.imjustdoom.minecrash.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -29,7 +30,7 @@ public class BlockUserCmd implements Command {
 
     @Override
     public String[] getUsers() {
-        return new String[]{Main.getInstance().getConfig().getOwner()};
+        return new String[]{MineCrash.get().getConfig().getOwner()};
     }
 
     @Override
@@ -45,7 +46,7 @@ public class BlockUserCmd implements Command {
 
         switch (block) {
             case "block":
-                if (Main.getInstance().getDb().isUserBlocked(blockUser)) {
+                if (MineCrash.get().getDb().isUserBlocked(blockUser)) {
                     message.replyEmbeds(new EmbedBuilder()
                             .setColor(Color.CYAN)
                             .setTitle("User is already blocked")
@@ -58,7 +59,7 @@ public class BlockUserCmd implements Command {
                 for (int i = 3; i < args.length; i++) {
                     sb.append(args[i]).append(" ");
                 }
-                Main.getInstance().getDb().addUserToBlockedUsers(blockUser, args.length > 3 ? sb.toString() : "");
+                MineCrash.get().getDb().addUserToBlockedUsers(blockUser, args.length > 3 ? sb.toString() : "");
 
                 message.replyEmbeds(new EmbedBuilder()
                         .setColor(Color.CYAN)
@@ -67,7 +68,7 @@ public class BlockUserCmd implements Command {
                         .build()).queue();
                 break;
             case "unblock":
-                if (!Main.getInstance().getDb().isUserBlocked(blockUser)) {
+                if (!MineCrash.get().getDb().isUserBlocked(blockUser)) {
                     message.replyEmbeds(new EmbedBuilder()
                             .setColor(Color.CYAN)
                             .setTitle("User is not blocked")
@@ -76,7 +77,7 @@ public class BlockUserCmd implements Command {
                     return;
                 }
 
-                Main.getInstance().getDb().removeUserFromBlockedUsers(blockUser);
+                MineCrash.get().getDb().removeUserFromBlockedUsers(blockUser);
 
                 message.replyEmbeds(new EmbedBuilder()
                         .setColor(Color.CYAN)
@@ -86,7 +87,7 @@ public class BlockUserCmd implements Command {
                 break;
             case "info":
             case "reason":
-                if (!Main.getInstance().getDb().isUserBlocked(blockUser)) {
+                if (!MineCrash.get().getDb().isUserBlocked(blockUser)) {
                     message.replyEmbeds(new EmbedBuilder()
                             .setColor(Color.CYAN)
                             .setTitle("User is not blocked")
@@ -95,7 +96,7 @@ public class BlockUserCmd implements Command {
                     return;
                 }
 
-                String reason = Main.getInstance().getDb().getBlockedUserReason(blockUser);
+                String reason = MineCrash.get().getDb().getBlockedUserReason(blockUser);
                 message.replyEmbeds(new EmbedBuilder()
                         .setColor(Color.CYAN)
                         .setTitle("Blocked user info")
@@ -110,3 +111,4 @@ public class BlockUserCmd implements Command {
         return null;
     }
 }
+*/

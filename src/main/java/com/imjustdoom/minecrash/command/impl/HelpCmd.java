@@ -1,11 +1,8 @@
 package com.imjustdoom.minecrash.command.impl;
 
-import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
 import java.util.List;
@@ -13,13 +10,13 @@ import java.util.List;
 public class HelpCmd implements Command {
 
     @Override
-    public String[] getName() {
-        return new String[]{"help", "h"};
+    public String getName() {
+        return "help";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Displays help regarding the bot";
     }
 
     @Override
@@ -33,15 +30,16 @@ public class HelpCmd implements Command {
     }
 
     @Override
-    public void execute(User user, String[] args, Message message, TextChannel channel) {
+    public void execute(SlashCommandInteractionEvent event) {
 
-        message.replyEmbeds(new EmbedBuilder()
+        event.replyEmbeds(new EmbedBuilder()
                 .setTitle("Help")
-                .setDescription("Command prefixes are ! or c!")
-                .addField("!error/!crash", "To get a crash/error solved by the bot run the command !error or " +
-                        "!crash and either paste in the error or upload it in a txt file. If you upload a file add \"file\" after !error/!crash.", false)
-                .addField("!about/!stats", "Get some stats about the discord bot!", false)
-                .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
+//                .setDescription("Command prefixes are ! or c! (Currently replaced by slash commands)")
+                .addField("/crash or /error", "To get a crash/error solved by the bot run the command /error or " +
+                        "/crash and either paste in the error or upload it in a txt file. If you upload a file add \"file\" after !error/!crash.", false)
+                .addField("/statistics", "Get some stats about the discord bot!", false)
+                .addField("/about", "Displays information about the project", false)
+                .setFooter("Discord: " + "Soon:tm:")
                 .setColor(Color.CYAN)
                 .build()).queue();
     }

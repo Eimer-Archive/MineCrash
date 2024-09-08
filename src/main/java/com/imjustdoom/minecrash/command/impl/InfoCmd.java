@@ -1,11 +1,9 @@
 package com.imjustdoom.minecrash.command.impl;
 
-import com.imjustdoom.minecrash.Main;
+import com.imjustdoom.minecrash.MineCrash;
 import com.imjustdoom.minecrash.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
 import java.util.List;
@@ -13,13 +11,13 @@ import java.util.List;
 public class InfoCmd implements Command {
 
     @Override
-    public String[] getName() {
-        return new String[]{"information", "i", "info", "stats", "statistics"};
+    public String getName() {
+        return "statistics";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Displays statistics for the bot/project";
     }
 
     @Override
@@ -33,17 +31,16 @@ public class InfoCmd implements Command {
     }
 
     @Override
-    public void execute(User user, String[] args, Message message, TextChannel channel) {
+    public void execute(SlashCommandInteractionEvent event) {
 
-        int guilds = Main.getInstance().getJda().getGuilds().size();
-        int solvedErrors = Main.getInstance().getBotStats().getSolvedErrors();
+        int guilds = MineCrash.get().getJda().getGuilds().size();
 
-        message.replyEmbeds(new EmbedBuilder()
+        event.replyEmbeds(new EmbedBuilder()
                 .setTitle("MineCrash Info")
                 .setDescription("")
                 .addField("Servers", String.valueOf(guilds), false)
-                .addField("Solved errors", String.valueOf(solvedErrors), false)
-                .setFooter("Discord: " + Main.getInstance().getConfig().getServer())
+                .addField("Solved errors", "Soon:tm:", false)
+                .setFooter("Discord: " + "Soon:tm:")
                 .setColor(Color.CYAN)
                 .build()).queue();
     }

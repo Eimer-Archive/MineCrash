@@ -1,8 +1,0 @@
-{
-  "error": "Server is overloaded",
-  "matches": [
-    "Can't keep up! Is the server overloaded?"
-  ],
-  "arguments": {},
-  "solution": "Your machine can't keep up and is struggling to run the server. If you are not try using Paper or a fork of it. Else try upgrading your server hosting. If you are running a chunk generator or something else that is heavy on resources this is normal. In most cases you can ignore this."
-}
