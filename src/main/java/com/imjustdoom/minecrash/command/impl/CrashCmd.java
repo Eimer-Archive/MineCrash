@@ -1,6 +1,8 @@
 package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.util.CrashUtil;
+import com.imjustdoom.minecrash.util.NetworkUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -43,7 +45,7 @@ public class CrashCmd implements Command {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
 
-        Message.Attachment errorFile =  event.getOption("error").getAsAttachment();
+        Message.Attachment errorFile = event.getOption("error").getAsAttachment();
 
         // Convert to MiB
         if ((errorFile.getSize() / 1024f / 1024f) > 24f) {
@@ -74,9 +76,15 @@ public class CrashCmd implements Command {
                 return;
             }
 
-
-
-            event.getHook().sendMessage("Success").queue();
+            try {
+                event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                        .setTitle("Crash/Error")
+                        .setDescription(NetworkUtil.sendErrorForCheck(text))
+                        .build()).queue();
+            } catch (IOException ex) {
+                event.getHook().sendMessage("Error").queue();
+                throw new RuntimeException(ex);
+            }
         });
 
 //        if (args.length == 1) {
