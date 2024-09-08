@@ -38,7 +38,7 @@ public class InfoCmd implements Command {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
 
-        int guilds = MineCrash.get().getJda().getGuilds().size();
+        long guilds = MineCrash.get().getJda().getGuildCache().size();
 
         event.replyEmbeds(CrashUtil.getDefaultEmbed()
                 .setTitle("MineCrash Info")
