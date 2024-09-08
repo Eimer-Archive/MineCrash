@@ -50,6 +50,10 @@ public class MineCrash {
     }
 
     public static void main(String[] args) throws LoginException, IOException, InterruptedException {
+        if (args.length < 1) {
+            System.err.println("The token for the bot needs to be specified as the first argument");
+            return;
+        }
         new MineCrash(args[0]);
     }
 
