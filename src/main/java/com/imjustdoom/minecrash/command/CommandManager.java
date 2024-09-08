@@ -27,7 +27,7 @@ public class CommandManager extends ListenerAdapter {
         for (Command command : commands) {
             if (command.getName().equalsIgnoreCase(event.getName())) {
 
-                System.out.println("Command being run - " + event.getName());
+                System.out.println("Command '" + event.getName() + "' was run by " + event.getUser().getName());
                 command.execute(event);
                 return;
             }
