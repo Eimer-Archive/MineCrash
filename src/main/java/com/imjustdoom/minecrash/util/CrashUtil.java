@@ -6,12 +6,18 @@ import java.awt.*;
 
 public class CrashUtil {
 
-    public static EmbedBuilder getCrashEmbed(String solution, String crash) {
+    public static EmbedBuilder getDefaultEmbed() {
         EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(Color.ORANGE);
+        embed.setFooter("Discord invite: https://discord.gg/ydGK5jYV6t");
+        return embed;
+    }
+
+    public static EmbedBuilder getCrashEmbed(String solution, String crash) {
+        EmbedBuilder embed = getDefaultEmbed();
         embed.setTitle(crash);
         embed.addField("Solution", solution, false);
         embed.setColor(Color.GREEN);
-        embed.setFooter("Discord invite: " + "Soon:tm:");
         return embed;
     }
 }

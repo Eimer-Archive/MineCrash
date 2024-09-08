@@ -59,7 +59,6 @@ public class CommandManager extends ListenerAdapter {
 //                        }
 //                    }
 //                }
-                System.out.println("command " + event.getName());
 
                 command.execute(event);
                 return;

@@ -1,11 +1,10 @@
 package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.command.Command;
-import net.dv8tion.jda.api.EmbedBuilder;
+import com.imjustdoom.minecrash.util.CrashUtil;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import java.awt.*;
 import java.util.List;
 
 public class AboutCmd implements Command {
@@ -38,7 +37,7 @@ public class AboutCmd implements Command {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
 
-        event.replyEmbeds(new EmbedBuilder()
+        event.replyEmbeds(CrashUtil.getDefaultEmbed()
                 .setTitle("MineCrash")
                 .setDescription("For help run /help")
                 .addField("About", "This bot aims to take in errors/crash reports and respond with a solution. " +
@@ -46,8 +45,6 @@ public class AboutCmd implements Command {
                 .addField("How does it work?", "The bot works by checking for certain keywords and taking certain " +
                         "information from the error by using regex.", false)
                 .addField("Source", "This is also open source and can be found on GitHub [here](https://github.com/JustDoom/MineCrash)", false)
-                .setFooter("Discord: " + "Soon:tm:")
-                .setColor(Color.CYAN)
                 .build()).queue();
     }
 
