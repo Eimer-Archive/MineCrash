@@ -77,6 +77,7 @@ public class CrashCmd implements Command {
                     while ((line = reader.readLine()) != null) {
                         out.append(line);
                     }
+                    inputStream.close();
                     text = out.toString();
                 } catch (IOException exception) {
                     event.getHook().sendMessage("Error").queue();
