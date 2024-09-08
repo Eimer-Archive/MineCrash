@@ -4,6 +4,7 @@ import com.imjustdoom.minecrash.MineCrash;
 import com.imjustdoom.minecrash.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.List;
@@ -18,6 +19,11 @@ public class InfoCmd implements Command {
     @Override
     public String getDescription() {
         return "Displays statistics for the bot/project";
+    }
+
+    @Override
+    public OptionData[] getOptions() {
+        return new OptionData[0];
     }
 
     @Override

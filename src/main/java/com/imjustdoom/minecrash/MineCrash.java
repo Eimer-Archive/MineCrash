@@ -28,17 +28,17 @@ public class MineCrash {
 
         JDABuilder builder = JDABuilder.createDefault(token)
                 .addEventListeners(this.commandManager);
-                //.enableIntents(GatewayIntent.GUILD_MEMBERS);
+        //.enableIntents(GatewayIntent.GUILD_MEMBERS);
 
         this.jda = builder.build();
         this.jda.awaitReady();
         this.jda.getPresence().setActivity(Activity.customStatus("Might be under a recode " + Emoji.fromUnicode("\uD83D\uDC40").getFormatted()));
 
-        List<CommandData> data = new ArrayList<>();
+        List<CommandData> commandDataList = new ArrayList<>();
         for (Command command : this.commandManager.getCommands()) {
-            data.add(Commands.slash(command.getName(), command.getDescription()));
+            commandDataList.add(Commands.slash(command.getName(), command.getDescription()).addOptions(command.getOptions()));
         }
-        this.jda.updateCommands().addCommands(data).queue();
+        this.jda.updateCommands().addCommands(commandDataList).queue();
     }
 
     public String[] getPrefix() {

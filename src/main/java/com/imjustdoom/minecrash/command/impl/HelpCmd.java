@@ -3,6 +3,7 @@ package com.imjustdoom.minecrash.command.impl;
 import com.imjustdoom.minecrash.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.List;
@@ -17,6 +18,11 @@ public class HelpCmd implements Command {
     @Override
     public String getDescription() {
         return "Displays help regarding the bot";
+    }
+
+    @Override
+    public OptionData[] getOptions() {
+        return new OptionData[0];
     }
 
     @Override

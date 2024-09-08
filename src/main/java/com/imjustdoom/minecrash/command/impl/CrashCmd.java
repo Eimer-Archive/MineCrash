@@ -1,51 +1,57 @@
-//package com.imjustdoom.minecrash.command.impl;
-//
-//import com.imjustdoom.minecrash.MineCrash;
-//import com.imjustdoom.minecrash.command.Command;
-//import com.imjustdoom.minecrash.crash.Crash;
-//import com.imjustdoom.minecrash.util.CrashUtil;
-//import net.dv8tion.jda.api.EmbedBuilder;
-//import net.dv8tion.jda.api.entities.Message;
-//import net.dv8tion.jda.api.entities.User;
-//import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-//import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-//import net.dv8tion.jda.api.utils.FileUpload;
-//
-//import java.awt.*;
-//import java.io.BufferedReader;
-//import java.io.ByteArrayInputStream;
-//import java.io.InputStreamReader;
-//import java.net.URL;
-//import java.nio.charset.StandardCharsets;
-//import java.util.List;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
-//
-//public class CrashCmd implements Command {
-//
-//    @Override
-//    public String[] getName() {
-//        return new String[]{"crash", "error"};
-//    }
-//
-//    @Override
-//    public String getDescription() {
-//        return null;
-//    }
-//
-//    @Override
-//    public String[] getRoles() {
-//        return new String[]{};
-//    }
-//
-//    @Override
-//    public String[] getUsers() {
-//        return new String[]{};
-//    }
-//
-//    @Override
-//    public void execute(User user, String[] args, Message message, TextChannel channel) {
-//
+package com.imjustdoom.minecrash.command.impl;
+
+import com.imjustdoom.minecrash.command.Command;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+
+import java.util.List;
+
+public class CrashCmd implements Command {
+
+    @Override
+    public String getName() {
+        return "error";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Tries to solve the error/crash";
+    }
+
+    @Override
+    public OptionData[] getOptions() {
+        return new OptionData[]{new OptionData(OptionType.ATTACHMENT, "error", "The file containing the error", true)};
+    }
+
+    @Override
+    public String[] getRoles() {
+        return new String[]{};
+    }
+
+    @Override
+    public String[] getUsers() {
+        return new String[]{};
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
+
+        Message.Attachment errorFile =  event.getOption("error").getAsAttachment();
+
+        if ((errorFile.getSize() / 1024 / 1024) > 24) {
+            event.reply("File is too large, currently only 24MiB and below are supported").queue();
+            return;
+        }
+
+        if (!errorFile.getContentType().contains("text/plain")) {
+            event.reply("Failed to read file. Please upload a .txt file containing your error").queue();
+            return;
+        }
+
+        event.reply("Success").queue();
+
 //        if (args.length == 1) {
 //            message.replyEmbeds(new EmbedBuilder()
 //                    .setColor(Color.RED)
@@ -141,10 +147,10 @@
 //                        .setColor(Color.RED)
 //                        .build())
 //                .queue();
-//    }
-//
-//    @Override
-//    public List<Command> getCommands() {
-//        return null;
-//    }
-//}
+    }
+
+    @Override
+    public List<Command> getCommands() {
+        return null;
+    }
+}

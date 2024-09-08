@@ -1,6 +1,7 @@
 package com.imjustdoom.minecrash.command;
 
 import com.imjustdoom.minecrash.command.impl.AboutCmd;
+import com.imjustdoom.minecrash.command.impl.CrashCmd;
 import com.imjustdoom.minecrash.command.impl.HelpCmd;
 import com.imjustdoom.minecrash.command.impl.InfoCmd;
 import net.dv8tion.jda.api.entities.User;
@@ -16,6 +17,7 @@ public class CommandManager extends ListenerAdapter {
 
     public CommandManager() {
         commands.add(new AboutCmd());
+        commands.add(new CrashCmd());
         commands.add(new HelpCmd());
         commands.add(new InfoCmd());
     }
