@@ -108,18 +108,21 @@ public class CrashCmd implements Command {
 
     private void checkError(SlashCommandInteractionEvent event, String error) {
         try {
+            long start = System.currentTimeMillis();
             String[] response = NetworkUtil.sendErrorForCheck(error);
 
             if (response.length == 1) {
                 event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
                         .setTitle("Unknown Crash/Error")
                         .setDescription(response[0])
+                        .setFooter("Took " + (System.currentTimeMillis() - start) + "ms")
                         .setColor(Color.ORANGE)
                         .build()).queue();
             } else {
                 event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
                         .setTitle(response[0])
                         .setDescription(response[1])
+                        .setFooter("Took " + (System.currentTimeMillis() - start) + "ms")
                         .setColor(Color.GREEN)
                         .build()).queue();
             }
