@@ -31,7 +31,7 @@ public class HelpCmd implements Command {
 
     @Override
     public String[] getUsers() {
-        return new String[]{};
+        return new String[0];
     }
 
     @Override

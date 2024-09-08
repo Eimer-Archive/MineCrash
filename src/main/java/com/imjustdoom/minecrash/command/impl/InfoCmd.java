@@ -27,12 +27,12 @@ public class InfoCmd implements Command {
 
     @Override
     public String[] getRoles() {
-        return new String[]{};
+        return new String[0];
     }
 
     @Override
     public String[] getUsers() {
-        return new String[]{};
+        return new String[0];
     }
 
     @Override
@@ -42,9 +42,9 @@ public class InfoCmd implements Command {
 
         event.replyEmbeds(CrashUtil.getDefaultEmbed()
                 .setTitle("MineCrash Info")
-                .setDescription("")
                 .addField("Servers", String.valueOf(guilds), false)
                 .addField("Solved errors", "Soon:tm:", false)
+                .addField("Errors for review", "Soon:tm:", false)
                 .build()).queue();
     }
 

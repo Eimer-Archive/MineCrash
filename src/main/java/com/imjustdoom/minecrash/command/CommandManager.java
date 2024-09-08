@@ -16,10 +16,10 @@ public class CommandManager extends ListenerAdapter {
     private final List<Command> commands = new ArrayList<>();
 
     public CommandManager() {
-        commands.add(new AboutCmd());
-        commands.add(new CrashCmd());
-        commands.add(new HelpCmd());
-        commands.add(new InfoCmd());
+        this.commands.add(new AboutCmd());
+        this.commands.add(new CrashCmd());
+        this.commands.add(new HelpCmd());
+        this.commands.add(new InfoCmd());
     }
 
     @Override

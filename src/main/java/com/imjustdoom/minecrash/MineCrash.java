@@ -19,15 +19,14 @@ public class MineCrash {
     private final String[] prefix = new String[]{"!", "D!", "C!"};
 
     private final JDA jda;
-    private final CommandManager commandManager;
 
     public MineCrash(String token) throws IOException, LoginException, InterruptedException {
         INSTANCE = this;
 
-        this.commandManager = new CommandManager();
+        CommandManager commandManager = new CommandManager();
 
         JDABuilder builder = JDABuilder.createDefault(token)
-                .addEventListeners(this.commandManager);
+                .addEventListeners(commandManager);
         //.enableIntents(GatewayIntent.GUILD_MEMBERS);
 
         this.jda = builder.build();
@@ -35,7 +34,7 @@ public class MineCrash {
         this.jda.getPresence().setActivity(Activity.customStatus("Might be under a recode " + Emoji.fromUnicode("\uD83D\uDC40").getFormatted()));
 
         List<CommandData> commandDataList = new ArrayList<>();
-        for (Command command : this.commandManager.getCommands()) {
+        for (Command command : commandManager.getCommands()) {
             commandDataList.add(Commands.slash(command.getName(), command.getDescription()).addOptions(command.getOptions()));
         }
         this.jda.updateCommands().addCommands(commandDataList).queue();

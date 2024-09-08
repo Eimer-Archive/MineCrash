@@ -36,7 +36,6 @@ public class AboutCmd implements Command {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-
         event.replyEmbeds(CrashUtil.getDefaultEmbed()
                 .setTitle("MineCrash")
                 .setDescription("For help run /help")

@@ -40,12 +40,13 @@ public class CrashCmd implements Command {
 
         Message.Attachment errorFile =  event.getOption("error").getAsAttachment();
 
-        if ((errorFile.getSize() / 1024 / 1024) > 24) {
+        // Convert to MiB
+        if ((errorFile.getSize() / 1024f / 1024f) > 24f) {
             event.reply("File is too large, currently only 24MiB and below are supported").queue();
             return;
         }
 
-        if (!errorFile.getContentType().contains("text/plain")) {
+        if (errorFile.getContentType() == null || !errorFile.getContentType().contains("text/plain")) {
             event.reply("Failed to read file. Please upload a .txt file containing your error").queue();
             return;
         }
