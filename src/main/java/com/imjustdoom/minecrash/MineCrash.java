@@ -27,7 +27,6 @@ public class MineCrash {
 
         JDABuilder builder = JDABuilder.createDefault(token)
                 .addEventListeners(commandManager);
-        //.enableIntents(GatewayIntent.GUILD_MEMBERS);
 
         this.jda = builder.build();
         this.jda.awaitReady();
