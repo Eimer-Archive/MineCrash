@@ -9,8 +9,6 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
-import javax.security.auth.login.LoginException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +18,12 @@ public class MineCrash {
 
     private final JDA jda;
 
-    public MineCrash(String token) throws IOException, LoginException, InterruptedException {
+    public MineCrash(String token) throws InterruptedException {
         INSTANCE = this;
 
         CommandManager commandManager = new CommandManager();
 
-        JDABuilder builder = JDABuilder.createDefault(token)
-                .addEventListeners(commandManager);
-
-        this.jda = builder.build();
+        this.jda = JDABuilder.createDefault(token).addEventListeners(commandManager).build();
         this.jda.awaitReady();
         this.jda.getPresence().setActivity(Activity.customStatus("Might be under a recode " + Emoji.fromUnicode("\uD83D\uDC40").getFormatted()));
 
@@ -47,7 +42,7 @@ public class MineCrash {
         return this.jda;
     }
 
-    public static void main(String[] args) throws LoginException, IOException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {
             System.err.println("The token for the bot needs to be specified as the first argument");
             return;
@@ -56,7 +51,6 @@ public class MineCrash {
     }
 
     private static MineCrash INSTANCE;
-
     public static MineCrash get() {
         return INSTANCE;
     }
