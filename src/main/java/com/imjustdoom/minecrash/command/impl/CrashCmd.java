@@ -65,7 +65,7 @@ public class CrashCmd implements Command {
                 return;
             }
 
-            System.out.println("File size is " + (errorFile.getSize() / 1000f / 1000f) + "kb");
+            System.out.println("File size is " + (errorFile.getSize() / 1000f / 1000f) + "mb");
 
             CompletableFuture<InputStream> futureFile = errorFile.getProxy().download();
             futureFile.whenComplete((inputStream, e) -> {
