@@ -33,14 +33,14 @@ public class NetworkUtil {
         return object.get("count").getAsInt();
     }
 
-    public static String sendErrorForCheck(String error) throws IOException {
+    public static String[] sendErrorForCheck(String error) throws IOException {
         try {
             JsonObject object = sendPost(CHECK, error);
 
             if (object.has("solution")) {
-                return object.get("solution").getAsString();
+                return new String[]{object.get("error").getAsString(), object.get("solution").getAsString()};
             } else if (object.has("response")) {
-                return object.get("response").getAsString();
+                return new String[]{object.get("response").getAsString()};
             }
 
             throw new IOException("Oh no something went wrong");

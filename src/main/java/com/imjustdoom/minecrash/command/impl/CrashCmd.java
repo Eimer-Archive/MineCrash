@@ -78,11 +78,21 @@ public class CrashCmd implements Command {
             }
 
             try {
-                event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
-                        .setTitle("Crash/Error")
-                        .setDescription(NetworkUtil.sendErrorForCheck(text))
-                                .setColor(Color.GREEN)
-                        .build()).queue();
+                String[] response = NetworkUtil.sendErrorForCheck(text);
+
+                if (response.length == 1) {
+                    event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                            .setTitle("Unknown Crash/Error")
+                            .setDescription(response[0])
+                            .setColor(Color.ORANGE)
+                            .build()).queue();
+                } else {
+                    event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                            .setTitle(response[0])
+                            .setDescription(response[1])
+                            .setColor(Color.GREEN)
+                            .build()).queue();
+                }
             } catch (IOException ex) {
                 event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
                 throw new RuntimeException(ex);
