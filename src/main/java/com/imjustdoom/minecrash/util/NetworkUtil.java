@@ -35,7 +35,15 @@ public class NetworkUtil {
 
     public static String sendErrorForCheck(String error) throws IOException {
         try {
-            return sendPost(CHECK, GSON.toJson(ErrorDto.create(error), ErrorDto.class));
+            JsonObject object = sendPost(CHECK, error);
+
+            if (object.has("solution")) {
+                return object.get("solution").getAsString();
+            } else if (object.has("response")) {
+                return object.get("response").getAsString();
+            }
+
+            throw new IOException("Oh no something went wrong");
         } catch (IOException e) {
             throw new IOException(e);
         }
@@ -56,7 +64,7 @@ public class NetworkUtil {
         }
     }
 
-    private static String sendPost(URL url, String body) throws IOException {
+    private static JsonObject sendPost(URL url, String body) throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", USER_AGENT);
@@ -66,27 +74,18 @@ public class NetworkUtil {
         // For POST only - START
         con.setDoOutput(true);
         try (OutputStream os = con.getOutputStream()) {
-            byte[] input = body.getBytes(StandardCharsets.UTF_8);
+            byte[] input = GSON.toJson(ErrorDto.create(body)).getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
         // For POST only - END
-
         int responseCode = con.getResponseCode();
 
         if (responseCode == HttpURLConnection.HTTP_OK) { //success
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            // print result
-            return response.toString();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            JsonObject object = GSON.fromJson(reader, JsonElement.class).getAsJsonObject();
+            reader.close();
+            return object;
         } else {
-            System.out.println("POST request did not work.");
             throw new IOException("Error sending POST");
         }
     }

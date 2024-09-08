@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,6 +81,7 @@ public class CrashCmd implements Command {
                 event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
                         .setTitle("Crash/Error")
                         .setDescription(NetworkUtil.sendErrorForCheck(text))
+                                .setColor(Color.GREEN)
                         .build()).queue();
             } catch (IOException ex) {
                 event.getHook().sendMessage("Error").queue();
