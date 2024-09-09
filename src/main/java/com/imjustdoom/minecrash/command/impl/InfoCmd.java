@@ -45,11 +45,12 @@ public class InfoCmd implements Command {
         long guilds = MineCrash.get().getJda().getGuildCache().size();
 
         try {
+            int[] values = NetworkUtil.getStatistics();
             event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
                     .setTitle("MineCrash Info")
                     .addField("Servers", String.valueOf(guilds), false)
-                    .addField("Solved errors", String.valueOf(NetworkUtil.getStatistics()), false)
-                    .addField("Errors for review", "Soon:tm:", false)
+                    .addField("Solved errors", String.valueOf(values[0]), false)
+                    .addField("Errors for review", String.valueOf(values[1]), false)
                     .build()).queue();
         } catch (IOException exception) {
             event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
