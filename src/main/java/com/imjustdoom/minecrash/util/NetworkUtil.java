@@ -23,14 +23,15 @@ public class NetworkUtil {
     private static final String BASE_URL = "http://localhost:8080/error/";
 
     // Get
-    private static final URL SUBMITTED_COUNT;
+    private static final URL STATISTICS;
 
     // Post
     private static final URL CHECK;
 
-    public static int getSubmittedCount() throws IOException {
-        JsonObject object = sendGet(SUBMITTED_COUNT);
-        return object.get("count").getAsInt();
+    public static int getStatistics() throws IOException {
+        JsonObject object = sendGet(STATISTICS);
+        if (!object.has("solvedErrors")) return -1;
+        return object.get("solvedErrors").getAsInt();
     }
 
     public static String[] sendErrorForCheck(String error) throws IOException {
@@ -92,7 +93,7 @@ public class NetworkUtil {
 
     static {
         try {
-            SUBMITTED_COUNT = URI.create(BASE_URL + "submittedCount").toURL();
+            STATISTICS = URI.create(BASE_URL + "statistics").toURL();
             CHECK = URI.create(BASE_URL + "check").toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
