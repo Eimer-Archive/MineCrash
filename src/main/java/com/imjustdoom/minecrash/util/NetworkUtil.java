@@ -1,6 +1,7 @@
 package com.imjustdoom.minecrash.util;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.imjustdoom.minecrash.dto.out.ErrorDto;
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class NetworkUtil {
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
     private static final String USER_AGENT = "MineCrash 1.0";
 
     private static final String BASE_URL = "http://localhost:8080/error/";
@@ -88,7 +89,7 @@ public class NetworkUtil {
             reader.close();
             return object;
         } else {
-            throw new IOException("Error sending POST");
+            throw new IOException("Error sending POST ");
         }
     }
 
