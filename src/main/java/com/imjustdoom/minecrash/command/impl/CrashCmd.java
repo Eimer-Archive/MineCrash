@@ -81,7 +81,7 @@ public class CrashCmd implements Command {
                     StringBuilder out = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        out.append(line);
+                        out.append(System.lineSeparator()).append(line);
                     }
                     inputStream.close();
                     text = out.toString();

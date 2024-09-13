@@ -89,7 +89,7 @@ public class NetworkUtil {
             reader.close();
             return object;
         } else {
-            throw new IOException("Error sending POST ");
+            throw new IOException("Error sending POST");
         }
     }
 
