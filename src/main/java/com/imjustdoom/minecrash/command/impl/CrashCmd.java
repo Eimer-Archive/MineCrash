@@ -1,37 +1,37 @@
 package com.imjustdoom.minecrash.command.impl;
 
-import com.imjustdoom.minecrash.Main;
 import com.imjustdoom.minecrash.command.Command;
-import com.imjustdoom.minecrash.config.BotStats;
-import com.imjustdoom.minecrash.crash.Crash;
 import com.imjustdoom.minecrash.util.CrashUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
+import com.imjustdoom.minecrash.util.NetworkUtil;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.utils.FileUpload;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.CompletableFuture;
 
 public class CrashCmd implements Command {
 
     @Override
-    public String[] getName() {
-        return new String[]{"crash", "error"};
+    public String getName() {
+        return "error";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Tries to solve the error/crash";
+    }
+
+    @Override
+    public OptionData[] getOptions() {
+        return new OptionData[]{new OptionData(OptionType.ATTACHMENT, "error", "The file containing the error", false), new OptionData(OptionType.STRING, "errortext", "Text containing a short error", false)};
     }
 
     @Override
@@ -45,103 +45,97 @@ public class CrashCmd implements Command {
     }
 
     @Override
-    public void execute(User user, String[] args, Message message, TextChannel channel) {
+    public void execute(SlashCommandInteractionEvent event) {
 
-        if (args.length == 1) {
-            message.replyEmbeds(new EmbedBuilder()
-                    .setColor(Color.RED)
-                    .setTitle("Missing error")
-                    .setDescription("Please specify an error to check.")
-                    .build()).queue();
-            return;
-        }
+        OptionMapping fileOption = event.getOption("error");
+        OptionMapping textOption = event.getOption("errortext");
 
-        String text = message.getContentRaw().replace(args[0] + " ", "");
+        event.deferReply().queue();
 
-        if (message.getAttachments().size() > 0) {
-            try {
-                URL url = new URL(message.getAttachments().get(0).getUrl());
-                BufferedReader read = new BufferedReader(new InputStreamReader(url.openStream()));
-                StringBuilder stringBuilder = new StringBuilder();
-                String i;
-                while ((i = read.readLine()) != null) {
-                    stringBuilder.append(i).append(System.lineSeparator());
-                }
-                read.close();
-
-                text = stringBuilder.toString();
-            } catch (Exception e) {
-                message.replyEmbeds(new EmbedBuilder()
-                        .setTitle("Invalid File")
-                        .setDescription("Please attach a valid file.")
-                        .setColor(Color.RED)
-                        .build()).queue();
+        if (fileOption != null) {
+            Message.Attachment errorFile = fileOption.getAsAttachment();
+            // Convert to MiB
+            if ((errorFile.getSize() / 1024f / 1024f) > 24f) {
+                event.reply("File is too large, currently only 24MiB and below are supported").queue();
                 return;
             }
-        }
 
-        CRASH:
-        for (Crash crash : Main.getInstance().getCrashList()) {
-
-            // Check if there is a match in the crash list
-            for (String match : crash.getMatches()) {
-                if (!text.contains(match)) {
-                    continue CRASH;
-                }
+            if (errorFile.getContentType() == null || !errorFile.getContentType().contains("text/plain")) {
+                event.reply("Failed to read file. Please upload a .txt file containing your error").queue();
+                return;
             }
 
-            String solution = crash.getSolution();
-            for (String arg : crash.getArguments().keySet()) {
-                Pattern pattern = Pattern.compile(crash.getArguments().get(arg));
-                Matcher matcher = pattern.matcher(text);
-
-                if (matcher.find()) {
-                    solution = solution.replaceAll("%" + arg, matcher.group(1));
-                }
+            if (errorFile.getSize() > 1000f * 1000f) {
+                System.out.println("File size is " + (errorFile.getSize() / 1000f / 1000f) + "mb");
+            } else if (errorFile.getSize() > 1000f) {
+                System.out.println("File size is " + (errorFile.getSize() / 1000f) + "kb");
+            } else {
+                System.out.println("File size is " + errorFile.getSize() + " bytes");
             }
 
-            // Send the crash solution
-            message.replyEmbeds(CrashUtil.getCrashEmbed(solution, crash.getError()).build()).queue();
+            CompletableFuture<InputStream> futureFile = errorFile.getProxy().download();
+            futureFile.whenComplete((inputStream, e) -> {
+                String text = "";
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder out = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        out.append(System.lineSeparator()).append(line);
+                    }
+                    inputStream.close();
+                    text = out.toString();
+                } catch (IOException exception) {
+                    event.getHook().sendMessage("Error").queue();
+                    return;
+                }
 
-            BotStats botStats = Main.getInstance().getBotStats();
-            botStats.setSolvedErrors(botStats.getSolvedErrors() + 1);
-            botStats.save();
+                checkError(event, text);
+            });
+
             return;
         }
 
-        // Add the error to the database if it's not in the database
-        String id = "-1";
-        if(!Main.getInstance().getDb().isUserBlocked(user.getId())) {
-            id =  Main.getInstance().getDb().addErrorForReview(user.getId(), text);
+        if (textOption != null) {
+            String error = textOption.getAsString();
 
-            // Send the error to the log channel for the solution to be added
-            MessageChannel logChannel = Main.getInstance().getJda().getTextChannelById(Main.getInstance().getConfig().getChannelId());
-            logChannel.sendMessageEmbeds(
-                            new EmbedBuilder()
-                                    .setTitle("Unknown Error...")
-                                    .setDescription("Error from " + user.getName() + "#" + user.getDiscriminator() + " (" + user.getId() + ")")
-                                    .setFooter("Error ID: " + id)
-                                    .setColor(Color.ORANGE)
-                                    .build())
-                    .addFiles(FileUpload.fromData(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)), id + "-error.txt"))
-                    .queue();
+            if (textOption.getAsString().isBlank()) {
+                event.reply("Error is blank, please try again with an error specified.").queue();
+                return;
+            }
 
-            message.replyEmbeds(new EmbedBuilder()
-                            .setTitle("This error has not been solved yet :(")
-                            .setDescription("This crash is not in the database. It will be submitted to the database to be solved. " +
-                                    "If you have a solution please go [here](https://github.com/JustDoom/MineCrash/issues) and submit an issue with this " + id + " in the title.")
-                            .setColor(Color.RED)
-                            .build())
-                    .queue();
+            checkError(event, error);
+
             return;
         }
 
-        message.replyEmbeds(new EmbedBuilder()
-                        .setTitle("This error has not been solved yet :(")
-                        .setDescription("This crash is not in the database sadly :(")
-                        .setColor(Color.RED)
-                        .build())
-                .queue();
+        event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed().setTitle("Please specify either an error file or an error through text using the \"errortext\" option.").build()).queue();
+    }
+
+    private void checkError(SlashCommandInteractionEvent event, String error) {
+        try {
+            long start = System.currentTimeMillis();
+            String[] response = NetworkUtil.sendErrorForCheck(error);
+
+            if (response.length == 1) {
+                event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                        .setTitle("Unknown Crash/Error")
+                        .setDescription(response[0])
+                        .setFooter("Took " + (System.currentTimeMillis() - start) + "ms")
+                        .setColor(Color.ORANGE)
+                        .build()).queue();
+            } else {
+                event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                        .setTitle(response[0])
+                        .setDescription(response[1])
+                        .setFooter("Took " + (System.currentTimeMillis() - start) + "ms")
+                        .setColor(Color.GREEN)
+                        .build()).queue();
+            }
+        } catch (IOException ex) {
+            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
+            ex.printStackTrace();
+        }
     }
 
     @Override

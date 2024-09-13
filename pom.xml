@@ -9,50 +9,39 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>net.badbird5907</groupId>
-            <artifactId>JDACommand</artifactId>
-            <version>4.0.2-REL</version>
-        </dependency>
-        <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-beta.21</version>
+            <version>5.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>club.minnced</groupId>
+                    <artifactId>opus-java</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>2.11.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.jagrosh</groupId>
-            <artifactId>jda-utilities</artifactId>
-            <version>LATEST</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.32</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.ocpsoft.prettytime</groupId>
-            <artifactId>prettytime</artifactId>
-            <version>5.0.6.Final</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.jagrosh</groupId>-->
+<!--            <artifactId>jda-utilities</artifactId>-->
+<!--            <version>LATEST</version>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.ocpsoft.prettytime</groupId>-->
+<!--            <artifactId>prettytime</artifactId>-->
+<!--            <version>5.0.6.Final</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <repositories>
@@ -83,8 +72,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>22</source>
+                    <target>22</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -100,7 +89,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>com.imjustdoom.minecrash.Main</Main-Class>
+                                        <Main-Class>com.imjustdoom.minecrash.MineCrash</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
@@ -110,5 +99,4 @@
             </plugin>
         </plugins>
     </build>
-    
 </project>
