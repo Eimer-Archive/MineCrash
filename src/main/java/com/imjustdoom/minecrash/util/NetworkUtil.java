@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.imjustdoom.minecrash.dto.out.ErrorDto;
+import com.imjustdoom.minecrash.exception.ErrorResponseException;
+import com.imjustdoom.minecrash.exception.HttpConnectException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,25 +33,22 @@ public class NetworkUtil {
 
     public static int[] getStatistics() throws IOException {
         JsonObject object = sendGet(STATISTICS);
-        if (!object.has("solvedErrors") || !object.has("errorsForReview")) throw new IOException("Unable to local stats");
+        if (!object.has("solvedErrors") || !object.has("errorsForReview"))
+            throw new IOException("Unable to local stats");
 
         return new int[]{object.get("solvedErrors").getAsInt(), object.get("errorsForReview").getAsInt()};
     }
 
     public static String[] sendErrorForCheck(String error) throws IOException {
-        try {
-            JsonObject object = sendPost(CHECK, error);
+        JsonObject object = sendPost(CHECK, error);
 
-            if (object.has("solution") && object.has("title")) {
-                return new String[]{object.get("title").getAsString(), object.get("solution").getAsString()};
-            } else if (object.has("response")) {
-                return new String[]{object.get("response").getAsString()};
-            }
-
-            throw new IOException("Oh no something went wrong");
-        } catch (IOException e) {
-            throw new IOException(e);
+        if (object.has("solution") && object.has("title")) {
+            return new String[]{object.get("title").getAsString(), object.get("solution").getAsString()};
+        } else if (object.has("response")) {
+            return new String[]{object.get("response").getAsString()};
         }
+
+        throw new IOException("Oh no something went wrong");
     }
 
     private static JsonObject sendGet(URL url) throws IOException {
@@ -68,28 +67,50 @@ public class NetworkUtil {
     }
 
     private static JsonObject sendPost(URL url, String body) throws IOException {
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("User-Agent", USER_AGENT);
-        con.setRequestProperty("Content-Type", "application/json; utf-8");
-        con.setRequestProperty("Accept", "application/json");
+        try {
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
 
-        // For POST only - START
-        con.setDoOutput(true);
-        try (OutputStream os = con.getOutputStream()) {
-            byte[] input = GSON.toJson(ErrorDto.create(body)).getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
-        }
-        // For POST only - END
-        int responseCode = con.getResponseCode();
+            // For POST only - START
+            con.setDoOutput(true);
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = GSON.toJson(ErrorDto.create(body)).getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            // For POST only - END
+            int responseCode = con.getResponseCode();
 
-        if (responseCode == HttpURLConnection.HTTP_OK) { //success
-            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            JsonObject object = GSON.fromJson(reader, JsonElement.class).getAsJsonObject();
-            reader.close();
-            return object;
-        } else {
-            throw new IOException("Error sending POST");
+            if (responseCode == HttpURLConnection.HTTP_OK) { //success
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                JsonObject object = GSON.fromJson(reader, JsonElement.class).getAsJsonObject();
+                reader.close();
+                return object;
+            } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                JsonObject object = GSON.fromJson(reader, JsonElement.class).getAsJsonObject();
+                reader.close();
+
+                if (object.has("error")) {
+                    throw new ErrorResponseException(object.get("error").getAsString());
+                } else {
+                    throw new IOException();
+                }
+            } else {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                JsonObject object = GSON.fromJson(reader, JsonElement.class).getAsJsonObject();
+                reader.close();
+
+                if (object.has("message")) {
+                    throw new ErrorResponseException(object.get("message").getAsString());
+                } else {
+                    throw new IOException();
+                }
+            }
+        } catch (IOException exception) {
+            throw new HttpConnectException();
         }
     }
 

@@ -1,6 +1,8 @@
 package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.command.Command;
+import com.imjustdoom.minecrash.exception.ErrorResponseException;
+import com.imjustdoom.minecrash.exception.HttpConnectException;
 import com.imjustdoom.minecrash.util.CrashUtil;
 import com.imjustdoom.minecrash.util.NetworkUtil;
 import net.dv8tion.jda.api.entities.Message;
@@ -49,13 +51,18 @@ public class CrashCmd implements Command {
 
         event.deferReply().queue();
 
+        if (!event.getUser().getName().equals("justdoom")) {
+            event.getHook().sendMessage("Hey! This bot is currently under development still. It will be up and running very very soon though! I see you hanyue5994! :)").queue();
+            return;
+        }
+
         OptionMapping fileOption = event.getOption("error");
         OptionMapping textOption = event.getOption("errortext");
 
         if (fileOption != null) {
             Message.Attachment errorFile = fileOption.getAsAttachment();
             // Convert to MiB
-            if ((errorFile.getSize() / 1024f / 1024f) > 24f) {
+            if ((errorFile.getSize()) > 12 * 1024 * 1024) {
                 event.reply("File is too large, currently only 24MiB and below are supported").queue();
                 return;
             }
@@ -65,10 +72,10 @@ public class CrashCmd implements Command {
                 return;
             }
 
-            if (errorFile.getSize() > 1000f * 1000f) {
-                System.out.println("File size is " + (errorFile.getSize() / 1000f / 1000f) + "mb");
-            } else if (errorFile.getSize() > 1000f) {
-                System.out.println("File size is " + (errorFile.getSize() / 1000f) + "kb");
+            if (errorFile.getSize() > 1024f * 1024f) {
+                System.out.println("File size is " + (errorFile.getSize() / 1024f / 1024f) + "MiB");
+            } else if (errorFile.getSize() > 1024f) {
+                System.out.println("File size is " + (errorFile.getSize() / 1024f) + "KiB");
             } else {
                 System.out.println("File size is " + errorFile.getSize() + " bytes");
             }
@@ -132,9 +139,13 @@ public class CrashCmd implements Command {
                         .setColor(Color.GREEN)
                         .build()).queue();
             }
+        } catch (ErrorResponseException exception) {
+            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription(exception.getError()).build()).queue();
+        } catch (HttpConnectException exception) {
+            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("Was unable to connect to the endpoint...").build()).queue();
         } catch (IOException ex) {
             event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
-            ex.printStackTrace();
+            System.err.println("There was an error fetching or reading a response: " + ex.getMessage());
         }
     }
 
