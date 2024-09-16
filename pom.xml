@@ -31,17 +31,6 @@
             <version>2.11.0</version>
             <scope>compile</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.jagrosh</groupId>-->
-<!--            <artifactId>jda-utilities</artifactId>-->
-<!--            <version>LATEST</version>-->
-<!--            <type>pom</type>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.ocpsoft.prettytime</groupId>-->
-<!--            <artifactId>prettytime</artifactId>-->
-<!--            <version>5.0.6.Final</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <repositories>
