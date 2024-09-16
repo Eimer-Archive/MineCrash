@@ -47,10 +47,10 @@ public class CrashCmd implements Command {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
 
+        event.deferReply().queue();
+
         OptionMapping fileOption = event.getOption("error");
         OptionMapping textOption = event.getOption("errortext");
-
-        event.deferReply().queue();
 
         if (fileOption != null) {
             Message.Attachment errorFile = fileOption.getAsAttachment();
