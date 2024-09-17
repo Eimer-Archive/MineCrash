@@ -5,7 +5,6 @@ import com.imjustdoom.minecrash.command.CommandManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
@@ -25,7 +24,7 @@ public class MineCrash {
 
         this.jda = JDABuilder.createDefault(token).addEventListeners(commandManager).build();
         this.jda.awaitReady();
-        this.jda.getPresence().setActivity(Activity.customStatus("Might be under a recode " + Emoji.fromUnicode("\uD83D\uDC40").getFormatted()));
+        this.jda.getPresence().setActivity(Activity.customStatus("MineCrash is back!"));
 
         List<CommandData> commandDataList = new ArrayList<>();
         for (Command command : commandManager.getCommands()) {
