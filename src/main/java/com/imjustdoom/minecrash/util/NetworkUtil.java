@@ -31,12 +31,12 @@ public class NetworkUtil {
     // Post
     private static final URL CHECK;
 
-    public static int[] getStatistics() throws IOException {
+    public static int getStatistics() throws IOException {
         JsonObject object = sendGet(STATISTICS);
-        if (!object.has("solvedErrors") || !object.has("errorsForReview"))
+        if (!object.has("solvedErrors"))
             throw new IOException("Unable to local stats");
 
-        return new int[]{object.get("solvedErrors").getAsInt(), object.get("errorsForReview").getAsInt()};
+        return object.get("solvedErrors").getAsInt();
     }
 
     public static String[] sendErrorForCheck(String error) throws IOException {
