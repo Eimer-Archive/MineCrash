@@ -51,11 +51,6 @@ public class CrashCmd implements Command {
 
         event.deferReply().queue();
 
-        if (!event.getUser().getName().equals("justdoom")) {
-            event.getHook().sendMessage("Hey! This bot is currently under development still. It will be up and running very very soon though! I see you hanyue5994! :)").queue();
-            return;
-        }
-
         OptionMapping fileOption = event.getOption("error");
         OptionMapping textOption = event.getOption("errortext");
 
