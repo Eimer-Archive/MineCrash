@@ -58,12 +58,12 @@ public class CrashCmd implements Command {
             Message.Attachment errorFile = fileOption.getAsAttachment();
             // Convert to MiB
             if ((errorFile.getSize()) > 12 * 1024 * 1024) {
-                event.reply("File is too large, currently only 24MiB and below are supported").queue();
+                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("File is too large, currently only 24MiB and below are supported").build()).queue();
                 return;
             }
 
             if (errorFile.getContentType() == null || !errorFile.getContentType().contains("text/plain")) {
-                event.reply("Failed to read file. Please upload a .txt file containing your error").queue();
+                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("Failed to read file. Please upload a .txt file containing your error").build()).queue();
                 return;
             }
 
@@ -102,7 +102,7 @@ public class CrashCmd implements Command {
             String error = textOption.getAsString();
 
             if (textOption.getAsString().isBlank()) {
-                event.reply("Error is blank, please try again with an error specified.").queue();
+                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("Error is blank, please try again with an error specified.").build()).queue();
                 return;
             }
 
