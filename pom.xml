@@ -14,10 +14,21 @@
     </properties>
 
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>net.dv8tion</groupId>-->
+<!--            <artifactId>JDA</artifactId>-->
+<!--            <version>5.1.0</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>club.minnced</groupId>-->
+<!--                    <artifactId>opus-java</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>net.dv8tion</groupId>
+            <groupId>com.github.freya022</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.1.0</version>
+            <version>2049c0b</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>

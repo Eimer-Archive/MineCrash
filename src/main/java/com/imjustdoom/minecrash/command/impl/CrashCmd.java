@@ -7,6 +7,8 @@ import com.imjustdoom.minecrash.util.CrashUtil;
 import com.imjustdoom.minecrash.util.NetworkUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.IntegrationType;
+import net.dv8tion.jda.api.interactions.InteractionContextType;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -34,6 +36,16 @@ public class CrashCmd implements Command {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[]{new OptionData(OptionType.ATTACHMENT, "error", "The file containing the error", false), new OptionData(OptionType.STRING, "errortext", "Text containing a short error", false)};
+    }
+
+    @Override
+    public InteractionContextType[] getContexts() {
+        return new InteractionContextType[]{InteractionContextType.GUILD, InteractionContextType.PRIVATE_CHANNEL, InteractionContextType.BOT_DM};
+    }
+
+    @Override
+    public IntegrationType[] getTypes() {
+        return new IntegrationType[]{IntegrationType.GUILD_INSTALL, IntegrationType.USER_INSTALL};
     }
 
     @Override

@@ -22,13 +22,13 @@ public class MineCrash {
 
         CommandManager commandManager = new CommandManager();
 
-        this.jda = JDABuilder.createDefault(token).addEventListeners(commandManager).build();
+        this.jda = JDABuilder.createLight(token).addEventListeners(commandManager).build();
         this.jda.awaitReady();
         this.jda.getPresence().setActivity(Activity.customStatus("MineCrash is back!"));
 
         List<CommandData> commandDataList = new ArrayList<>();
         for (Command command : commandManager.getCommands()) {
-            commandDataList.add(Commands.slash(command.getName(), command.getDescription()).addOptions(command.getOptions()));
+            commandDataList.add(Commands.slash(command.getName(), command.getDescription()).addOptions(command.getOptions()).setContexts(command.getContexts()).setIntegrationTypes(command.getTypes()));
         }
         this.jda.updateCommands().addCommands(commandDataList).queue();
     }
