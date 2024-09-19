@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.github.freya022</groupId>
             <artifactId>JDA</artifactId>
-            <version>2049c0b</version>
+            <version>feature~user-installable-apps-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>

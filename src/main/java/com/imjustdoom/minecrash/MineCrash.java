@@ -28,7 +28,11 @@ public class MineCrash {
 
         List<CommandData> commandDataList = new ArrayList<>();
         for (Command command : commandManager.getCommands()) {
-            commandDataList.add(Commands.slash(command.getName(), command.getDescription()).addOptions(command.getOptions()).setContexts(command.getContexts()).setIntegrationTypes(command.getTypes()));
+            commandDataList.add(
+                    Commands.slash(command.getName(), command.getDescription())
+                            .addOptions(command.getOptions())
+                            .setContexts(command.getContexts())
+                            .setIntegrationTypes(command.getTypes()));
         }
         this.jda.updateCommands().addCommands(commandDataList).queue();
     }
