@@ -52,7 +52,7 @@ public class InfoCmd implements Command {
                     .addField("Solved errors", String.valueOf(value), false)
                     .build()).queue();
         } catch (IOException exception) {
-            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
+            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription(exception.getMessage()).build()).queue();
         }
     }
 

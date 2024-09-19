@@ -34,7 +34,7 @@ public class NetworkUtil {
     public static int getStatistics() throws IOException {
         JsonObject object = sendGet(STATISTICS);
         if (!object.has("solvedErrors"))
-            throw new IOException("Unable to local stats");
+            throw new IOException("Unable to fetch stats");
 
         return object.get("solvedErrors").getAsInt();
     }
