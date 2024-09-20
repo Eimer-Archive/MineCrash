@@ -2,7 +2,7 @@ package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.MineCrash;
 import com.imjustdoom.minecrash.command.Command;
-import com.imjustdoom.minecrash.util.CrashUtil;
+import com.imjustdoom.minecrash.util.EmbedUtil;
 import com.imjustdoom.minecrash.util.NetworkUtil;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.IntegrationType;
@@ -58,13 +58,13 @@ public class InfoCmd implements Command {
 
         try {
             int value = NetworkUtil.getStatistics();
-            event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+            event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed()
                     .setTitle("MineCrash Info")
                     .addField("Servers", String.valueOf(guilds), false)
                     .addField("Solved errors", String.valueOf(value), false)
                     .build()).queue();
         } catch (IOException exception) {
-            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription(exception.getMessage()).build()).queue();
+            event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().setDescription(exception.getMessage()).build()).queue();
         }
     }
 

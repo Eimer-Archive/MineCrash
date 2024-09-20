@@ -1,7 +1,7 @@
 package com.imjustdoom.minecrash.command.impl;
 
 import com.imjustdoom.minecrash.command.Command;
-import com.imjustdoom.minecrash.util.CrashUtil;
+import com.imjustdoom.minecrash.util.EmbedUtil;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.IntegrationType;
 import net.dv8tion.jda.api.interactions.InteractionContextType;
@@ -48,7 +48,7 @@ public class AboutCmd implements Command {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        event.replyEmbeds(CrashUtil.getDefaultEmbed()
+        event.replyEmbeds(EmbedUtil.getDefaultEmbed()
                 .setTitle("MineCrash")
                 .setDescription("For help run /help")
                 .addField("About", "This bot aims to take in errors/crash reports and respond with a solution. " +

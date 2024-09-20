@@ -3,7 +3,7 @@ package com.imjustdoom.minecrash.command.impl;
 import com.imjustdoom.minecrash.command.Command;
 import com.imjustdoom.minecrash.exception.ErrorResponseException;
 import com.imjustdoom.minecrash.exception.HttpConnectException;
-import com.imjustdoom.minecrash.util.CrashUtil;
+import com.imjustdoom.minecrash.util.EmbedUtil;
 import com.imjustdoom.minecrash.util.NetworkUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -70,12 +70,12 @@ public class CrashCmd implements Command {
             Message.Attachment errorFile = fileOption.getAsAttachment();
             // Convert to MiB
             if ((errorFile.getSize()) > 12 * 1024 * 1024) {
-                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("File is too large, currently only 24MiB and below are supported").build()).queue();
+                event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().setDescription("File is too large, currently only 24MiB and below are supported").build()).queue();
                 return;
             }
 
             if (errorFile.getContentType() == null || !errorFile.getContentType().contains("text/plain")) {
-                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("Failed to read file. Please upload a .txt file containing your error").build()).queue();
+                event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().setDescription("Failed to read file. Please upload a .txt file containing your error").build()).queue();
                 return;
             }
 
@@ -114,7 +114,7 @@ public class CrashCmd implements Command {
             String error = textOption.getAsString();
 
             if (textOption.getAsString().isBlank()) {
-                event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("Error is blank, please try again with an error specified.").build()).queue();
+                event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().setDescription("Error is blank, please try again with an error specified.").build()).queue();
                 return;
             }
 
@@ -123,7 +123,7 @@ public class CrashCmd implements Command {
             return;
         }
 
-        event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed().setTitle("Please specify either an error file or an error through text using the \"errortext\" option.").build()).queue();
+        event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed().setTitle("Please specify either an error file or an error through text using the \"errortext\" option.").build()).queue();
     }
 
     private void checkError(SlashCommandInteractionEvent event, String error) {
@@ -132,26 +132,26 @@ public class CrashCmd implements Command {
             String[] response = NetworkUtil.sendErrorForCheck(error);
 
             if (response.length == 1) {
-                event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed()
                         .setTitle("Unknown Crash/Error")
                         .setDescription(response[0])
-                        .setFooter("Took " + (System.currentTimeMillis() - start) + "ms")
+                        .setFooter(EmbedUtil.prependOnFooter("Took " + (System.currentTimeMillis() - start) + "ms"))
                         .setColor(Color.ORANGE)
                         .build()).queue();
             } else {
-                event.getHook().sendMessageEmbeds(CrashUtil.getDefaultEmbed()
+                event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed()
                         .setTitle(response[0])
                         .setDescription(response[1])
-                        .setFooter("Took " + (System.currentTimeMillis() - start) + "ms")
+                        .setFooter(EmbedUtil.prependOnFooter("Took " + (System.currentTimeMillis() - start) + "ms"))
                         .setColor(Color.GREEN)
                         .build()).queue();
             }
         } catch (ErrorResponseException exception) {
-            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription(exception.getError()).build()).queue();
+            event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().setDescription(exception.getError()).build()).queue();
         } catch (HttpConnectException exception) {
-            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().setDescription("Was unable to connect to the endpoint...").build()).queue();
+            event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().setDescription("Was unable to connect to the endpoint...").build()).queue();
         } catch (IOException ex) {
-            event.getHook().sendMessageEmbeds(CrashUtil.getErrorEmbed().build()).queue();
+            event.getHook().sendMessageEmbeds(EmbedUtil.getErrorEmbed().build()).queue();
             System.err.println("There was an error fetching or reading a response: " + ex.getMessage());
         }
     }

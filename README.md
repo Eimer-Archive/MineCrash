@@ -32,3 +32,5 @@ To get started with contributing or setting your own bot up you must have Java 2
 #### Running
 
 To run the bot you just do it like any normal Java program `java -jar discordbot.jar`. To add the token either you can modify the code or input it in the program arguments.
+
+If there are issues with the git data maven plugin while using IntelliJ check out [this](https://stackoverflow.com/a/68488723/15840802)
