@@ -26,10 +26,10 @@ public class NetworkUtil {
     private static final String BASE_URL = "http://localhost:8080/error/";
 
     // Get
-    private static final URL STATISTICS;
+    public static final URL STATISTICS;
 
     // Post
-    private static final URL CHECK;
+    public static final URL CHECK;
 
     public static int getStatistics() throws IOException {
         JsonObject object = sendGet(STATISTICS);
@@ -37,18 +37,6 @@ public class NetworkUtil {
             throw new IOException("Unable to fetch stats");
 
         return object.get("solvedErrors").getAsInt();
-    }
-
-    public static String[] sendErrorForCheck(String error) throws IOException {
-        JsonObject object = sendPost(CHECK, error);
-
-        if (object.has("solution") && object.has("title")) {
-            return new String[]{object.get("title").getAsString(), object.get("solution").getAsString()};
-        } else if (object.has("response")) {
-            return new String[]{object.get("response").getAsString()};
-        }
-
-        throw new IOException("Oh no something went wrong");
     }
 
     private static JsonObject sendGet(URL url) throws IOException {
@@ -66,7 +54,7 @@ public class NetworkUtil {
         }
     }
 
-    private static JsonObject sendPost(URL url, String body) throws IOException {
+    public static JsonElement sendPost(URL url, String body) throws IOException {
         try {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
@@ -85,7 +73,7 @@ public class NetworkUtil {
 
             if (responseCode == HttpURLConnection.HTTP_OK) { //success
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                JsonObject object = GSON.fromJson(reader, JsonElement.class).getAsJsonObject();
+                JsonElement object = GSON.fromJson(reader, JsonElement.class);
                 reader.close();
                 return object;
             } else if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {

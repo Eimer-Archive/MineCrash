@@ -1,5 +1,7 @@
 package com.imjustdoom.minecrash.command.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.imjustdoom.minecrash.command.Command;
 import com.imjustdoom.minecrash.exception.ErrorResponseException;
 import com.imjustdoom.minecrash.exception.HttpConnectException;
@@ -128,22 +130,23 @@ public class CrashCmd implements Command {
 
     private void checkError(SlashCommandInteractionEvent event, String error) {
         try {
-            long start = System.currentTimeMillis();
-            String[] response = NetworkUtil.sendErrorForCheck(error);
+            JsonElement json = NetworkUtil.sendPost(NetworkUtil.CHECK, error);
+            if (!json.isJsonObject()) throw new IOException("Was expecting a JSON Object");
 
-            if (response.length == 1) {
+            JsonObject object = json.getAsJsonObject();
+            if (object.has("solution") && object.has("title")) {
+                event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed()
+                        .setTitle(object.get("title").getAsString())
+                        .setDescription(object.get("solution").getAsString())
+                        .setFooter(EmbedUtil.prependOnFooter("Took " + object.get("took") + "ms"))
+                        .setColor(Color.GREEN)
+                        .build()).queue();
+            } else if (object.has("response")) {
                 event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed()
                         .setTitle("Unknown Crash/Error")
-                        .setDescription(response[0])
-                        .setFooter(EmbedUtil.prependOnFooter("Took " + (System.currentTimeMillis() - start) + "ms"))
+                        .setDescription(object.get("response").getAsString())
+                        .setFooter(EmbedUtil.prependOnFooter("Took " + object.get("took") + "ms"))
                         .setColor(Color.ORANGE)
-                        .build()).queue();
-            } else {
-                event.getHook().sendMessageEmbeds(EmbedUtil.getDefaultEmbed()
-                        .setTitle(response[0])
-                        .setDescription(response[1])
-                        .setFooter(EmbedUtil.prependOnFooter("Took " + (System.currentTimeMillis() - start) + "ms"))
-                        .setColor(Color.GREEN)
                         .build()).queue();
             }
         } catch (ErrorResponseException exception) {
